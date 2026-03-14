@@ -92,6 +92,13 @@
             gap: 8px;
         }
 
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
         .btn-download {
             display: inline-flex;
             align-items: center;
@@ -102,7 +109,6 @@
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            margin-top: 20px;
             transition: background 0.3s ease, transform 0.2s ease;
             border: none;
             cursor: pointer;
@@ -404,7 +410,7 @@
             header { padding: 40px 30px; }
             .header-inner { flex-direction: column; text-align: center; gap: 20px; }
             .contact-info { justify-content: center; }
-            .btn-download { margin: 20px auto 0 auto; }
+            .button-group { justify-content: center; }
             .content { padding: 30px 20px; }
             .timeline-line, .timeline-progress { left: 20px; }
             .timeline-item { padding-left: 45px; }
@@ -418,41 +424,35 @@
             .skills-grid { grid-template-columns: 1fr; }
         }
 
-/* Dynamic Print CSS - Traditional ATS Resume Format */
+        /* Dynamic Print CSS - Traditional ATS Resume Format */
         @media print {
-            /* Reset basics for paper */
             body { background: #fff; font-size: 10pt; color: #000; }
             .container { margin: 0; padding: 0; box-shadow: none; border-radius: 0; max-width: 100%; }
             
-            /* Clean Header */
             header { background: transparent; color: #000; padding: 0 0 15px 0; border-bottom: 2px solid #000; }
             .header-inner { display: block; text-align: left; }
-            .profile-pic-container, .btn-download { display: none; } /* Hide photo and button */
+            .profile-pic-container, .button-group { display: none; } 
             header h1 { color: #000; font-size: 24pt; margin: 0 0 5px 0; }
             .contact-info { color: #333; display: block; font-size: 9.5pt; margin-top: 5px;}
             .contact-info span { display: inline-block; margin-right: 15px; margin-bottom: 3px;}
             .personal-tags { color: #555; margin-top: 5px; font-style: italic; }
 
-            /* Content Spacing */
             .content { padding: 15px 0 0 0; }
             h2 { color: #000; font-size: 13pt; border-bottom: 1px solid #000; padding-bottom: 3px; margin-top: 15px; margin-bottom: 10px; }
-            h2::after { display: none; } /* Hide the blue accent line */
+            h2::after { display: none; } 
             .summary-text { font-size: 10pt; margin-bottom: 15px; line-height: 1.4; }
 
-            /* Flatten Languages into a clean list */
             .language-grid { display: block; margin: 0; }
             .lang-item { display: inline-block; padding: 0; border: none; box-shadow: none; margin: 0 15px 5px 0; background: transparent; }
-            .progress-bg { display: none; } /* Hide the graphic bars completely */
+            .progress-bg { display: none; } 
             .lang-header { margin: 0; font-size: 10pt; color: #000; }
-            .lang-flag { display: none; } /* Hide emojis for professional print */
+            .lang-flag { display: none; } 
 
-            /* Flatten Timeline into traditional format */
             .timeline { margin-top: 10px; }
-            .timeline-line, .timeline-progress, .timeline-dot { display: none; } /* Hide timeline graphics */
+            .timeline-line, .timeline-progress, .timeline-dot { display: none; } 
             .timeline-item { padding-left: 0; margin-bottom: 15px; }
             .timeline-date { position: static; text-align: left; width: auto; font-weight: normal; margin-bottom: 2px; display: inline-block; background: transparent; color: #000; padding: 0; font-style: italic; }
             
-            /* Flatten Job Cards */
             .job-card { border: none; padding: 0; box-shadow: none; margin-bottom: 15px; background: transparent; }
             .job-card:hover { transform: none; }
             .job-title { font-size: 11pt; color: #000; margin: 0 0 2px 0; }
@@ -463,17 +463,14 @@
             .job-card p, .job-card ul { margin: 5px 0; line-height: 1.4; color: #000; }
             .cred-box { background: transparent; border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
 
-            /* Flatten Skills Grid */
             .skills-grid { display: block; }
             .skill-card { border: none; padding: 0; margin-bottom: 10px; box-shadow: none; }
             .skill-card h3 { font-size: 10.5pt; color: #000; margin-bottom: 3px; }
             .skill-card p { line-height: 1.4; margin: 0; color: #000; }
 
-            /* Manage Page Breaks so jobs don't cut in half */
             .job-card, .skill-card { page-break-inside: avoid; }
             h2 { page-break-after: avoid; }
             
-            /* Force reveal animations to display instantly for print */
             .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
         }
     </style>
@@ -495,10 +492,17 @@
                     <span>✉️ tombonte89@gmail.com</span>
                     <span>📱 +34 604 493 762</span>
                 </div>
-                <button class="btn-download" onclick="window.print()">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    Save as PDF
-                </button>
+                
+                <div class="button-group">
+                    <a href="about.html" class="btn-download" style="background: #334155;">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        Get to know me
+                    </a>
+                    <button class="btn-download" onclick="window.print()">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Save as PDF
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -507,7 +511,7 @@
 
         <section>
             <h2 class="reveal">💼 Professional Summary</h2>
-            <p class="summary-text reveal">Multilingual Operations and Customer Success professional with an academic background in Engineering and over a decade of experience managing international logistics, high-stakes scheduling, and diverse teams. Proven ability to handle dynamic B2B relationships, crisis de-escalation, and premium customer service across Europe and Latin America. Seeking to transition deep operational expertise and six-language fluency into the tech, SaaS, or logistics sectors.</p>
+            <p class="summary-text reveal">Multilingual Operations and Customer Success professional with an academic background in Engineering and over a decade of experience managing international logistics, high-stakes scheduling, and diverse teams. Proven ability to handle dynamic B2B relationships, crisis de-escalation, and premium customer service across Europe and Latin America. Armed with fluency in six languages, I leverage a data-driven approach to optimize daily operations, mentor multinational staff, and build lasting client trust. Currently seeking to transition this deep operational expertise and high-touch customer management experience into a dynamic role within the tech, SaaS, or logistics sectors.</p>
         </section>
 
         <section>
