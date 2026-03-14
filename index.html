@@ -74,6 +74,7 @@
         .header-text {
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
 
         header h1 {
@@ -234,15 +235,57 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             overflow: hidden;
             border: 1px solid var(--border-color);
+            position: relative;
         }
 
         /* Leaflet Map Container */
-        #map {
+        #map-wrapper {
+            position: relative;
             width: 100%;
             height: 400px;
-            background: #eef2f5; 
             border-bottom: 1px solid var(--border-color);
-            z-index: 1; /* Keep it below buttons */
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            background: #eef2f5; 
+            z-index: 1;
+        }
+
+        /* The Hovering Question Mark Overlay */
+        #question-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(248, 250, 252, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none; /* Allows interacting with map behind it */
+            transition: opacity 0.6s ease;
+        }
+
+        #question-overlay.visible {
+            opacity: 1;
+        }
+
+        .giant-q {
+            font-size: 7em;
+            font-weight: 800;
+            color: var(--secondary-color);
+            text-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
         /* Custom Leaflet Dot Marker */
@@ -274,7 +317,7 @@
             padding: 30px 40px;
             background: var(--card-bg);
             position: relative;
-            z-index: 2;
+            z-index: 15;
         }
 
         .map-ui-header {
@@ -390,13 +433,6 @@
             line-height: 1.4;
         }
 
-        .timeline-date span {
-            display: block;
-            font-size: 0.8em;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
         .timeline-dot {
             position: absolute;
             left: 133px;
@@ -416,7 +452,7 @@
             box-shadow: 0 0 0 4px var(--accent-color);
         }
 
-        /* Base Card Styling */
+        /* Base Card Styling for Print & Web Compatibility */
         .job-card {
             padding: 30px;
             background: #fff;
@@ -427,9 +463,7 @@
             margin-bottom: 25px;
         }
 
-        .timeline-item .job-card {
-            margin-bottom: 0;
-        }
+        .timeline-item .job-card { margin-bottom: 0; }
 
         .job-card:hover {
             transform: translateY(-3px) translateX(3px);
@@ -437,29 +471,20 @@
             box-shadow: 0 12px 20px rgba(0,0,0,0.06);
         }
 
+        .job-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
         .job-title {
             font-size: 1.35em;
             font-weight: 700;
             color: var(--primary-color);
-            margin: 0 0 8px 0;
-        }
-
-        .job-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
-            font-size: 0.95em;
-            color: var(--secondary-color);
-            font-weight: 600;
-            margin-bottom: 18px;
-        }
-
-        .job-company {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-main);
+            margin: 0;
         }
 
         .job-duration {
@@ -468,6 +493,18 @@
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .job-company {
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .job-card p, .skill-card p {
@@ -482,9 +519,7 @@
             margin-top: 10px;
         }
 
-        .job-card li {
-            margin-bottom: 8px;
-        }
+        .job-card li { margin-bottom: 8px; }
 
         /* Education Layout */
         .edu-container {
@@ -542,71 +577,92 @@
             .contact-info { justify-content: center; }
             .button-group { justify-content: center; }
             .content { padding: 30px 20px; }
-            #map { height: 300px; }
+            #map-wrapper { height: 300px; }
             .map-ui { padding: 20px; }
             .map-ui-header { flex-direction: column; align-items: flex-start; gap: 5px; }
             .btn-nav { padding: 10px 15px; font-size: 0.85em; width: 100px;}
             .timeline-line, .timeline-progress { left: 20px; }
             .timeline-item { padding-left: 45px; }
-            .timeline-date {
-                position: relative; top: 0; left: 0; width: auto; text-align: left;
-                margin-bottom: 12px; display: inline-block; background: var(--accent-color);
-                padding: 4px 12px; border-radius: 20px; color: var(--secondary-color);
-            }
-            .timeline-date span { display: inline; margin-left: 6px; }
+            .timeline-date { display: none; } /* Hide side dates on mobile, handled by header */
+            .job-header-top { flex-direction: column; align-items: flex-start; }
             .timeline-dot { left: 13px; top: 40px; }
             .skills-grid { grid-template-columns: 1fr; }
         }
 
-        /* Dynamic Print CSS - Traditional ATS Resume Format */
+        /* Dynamic Print CSS - Highly Professional ATS/Corporate Layout */
         @media print {
-            body { background: #fff; font-size: 10pt; color: #000; }
-            .container { margin: 0; padding: 0; box-shadow: none; border-radius: 0; max-width: 100%; }
+            @page { margin: 1.5cm; }
+            body { 
+                background: #fff; 
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 10.5pt; 
+                color: #222; 
+            }
+            .container { margin: 0; padding: 0; box-shadow: none; border-radius: 0; max-width: 100%; border: none; }
             
-            header { background: transparent; color: #000; padding: 0 0 15px 0; border-bottom: 2px solid #000; }
-            .header-inner { display: block; text-align: left; }
-            .profile-pic-container, .button-group { display: none; } 
-            header h1 { color: #000; font-size: 24pt; margin: 0 0 5px 0; }
-            .contact-info { color: #333; display: block; font-size: 9.5pt; margin-top: 5px;}
-            .contact-info span { display: inline-block; margin-right: 15px; margin-bottom: 3px;}
+            /* Hide web-only elements */
+            .emoji, .button-group, .progress-bg, .lang-flag, .trip-section, 
+            .timeline-line, .timeline-progress, .timeline-dot { 
+                display: none !important; 
+            } 
 
-            .content { padding: 15px 0 0 0; }
-            h2 { color: #000; font-size: 13pt; border-bottom: 1px solid #000; padding-bottom: 3px; margin-top: 15px; margin-bottom: 10px; }
+            /* Header */
+            header { background: transparent; color: #000; padding: 0 0 20px 0; border-bottom: 2px solid #000; }
+            .header-inner { display: flex; align-items: center; gap: 25px; flex-direction: row; text-align: left; }
+            .profile-pic-container { display: block; flex-shrink: 0; }
+            .profile-pic { width: 110px; height: 110px; border: none; box-shadow: none; }
+            
+            header h1 { color: #000; font-size: 26pt; margin: 0 0 5px 0; letter-spacing: 0; }
+            .contact-info { color: #444; display: block; font-size: 10pt; margin-top: 5px;}
+            .contact-info span { display: inline-block; margin-right: 18px; margin-bottom: 4px;}
+
+            /* General Content Layout */
+            .content { padding: 25px 0 0 0; }
+            section { margin-bottom: 35px; }
+            h2 { 
+                color: #000; 
+                font-size: 14pt; 
+                border-bottom: 1px solid #000; 
+                padding-bottom: 5px; 
+                margin-top: 0; 
+                margin-bottom: 15px; 
+            }
             h2::after { display: none; } 
-            .summary-text { font-size: 10pt; margin-bottom: 15px; line-height: 1.4; }
-
-            .language-grid { display: block; margin: 0; }
-            .lang-item { display: inline-block; padding: 0; border: none; box-shadow: none; margin: 0 15px 5px 0; background: transparent; }
-            .progress-bg { display: none; } 
-            .lang-header { margin: 0; font-size: 10pt; color: #000; }
-            .lang-flag { display: none; } 
-
-            /* Hide the interactive map completely on print */
-            .trip-section { display: none !important; }
-
-            .timeline { margin-top: 10px; }
-            .timeline-line, .timeline-progress, .timeline-dot { display: none; } 
-            .timeline-item { padding-left: 0; margin-bottom: 15px; }
-            .timeline-date { position: static; text-align: left; width: auto; font-weight: normal; margin-bottom: 2px; display: inline-block; background: transparent; color: #000; padding: 0; font-style: italic; }
             
-            .job-card { border: none; padding: 0; box-shadow: none; margin-bottom: 15px; background: transparent; }
-            .job-card:hover { transform: none; }
-            .job-title { font-size: 11pt; color: #000; margin: 0 0 2px 0; }
-            .job-meta { display: block; margin-bottom: 5px; color: #000; font-size: 10pt; }
-            .job-company { display: inline; font-weight: bold; }
-            .job-duration { background: transparent; color: #000; padding: 0; display: inline; font-weight: normal; font-style: italic; }
-            .job-duration::before { content: " | "; }
-            .job-card p, .job-card ul { margin: 5px 0; line-height: 1.4; color: #000; }
-            .cred-box { background: transparent; border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+            .summary-text { font-size: 10.5pt; margin-bottom: 0; line-height: 1.5; color: #222; }
 
+            /* Languages */
+            .language-grid { display: block; margin: 0; }
+            .lang-item { display: inline-block; width: 30%; padding: 0; border: none; box-shadow: none; margin: 0 2% 8px 0; background: transparent; }
+            .lang-header { margin: 0; font-size: 10.5pt; color: #000; font-weight: normal; }
+            .lang-identity { font-weight: bold; }
+
+            /* Experience / Timeline Overrides */
+            .timeline { margin-top: 0; }
+            .timeline-item { padding-left: 0; margin-bottom: 20px; }
+            .timeline-date { display: none; } /* Hide the vertical side date, we use job-duration now */
+            
+            .job-card { border: none; padding: 0; box-shadow: none; margin-bottom: 25px; background: transparent; }
+            .job-card:hover { transform: none; box-shadow: none; }
+            
+            .job-header-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+            .job-title { font-size: 12pt; color: #000; margin: 0; }
+            .job-duration { background: transparent; color: #333; padding: 0; font-size: 10.5pt; font-weight: bold; }
+            
+            .job-company { display: block; font-weight: 600; font-style: italic; color: #444; font-size: 10.5pt; margin-bottom: 8px; }
+            
+            .job-card p, .job-card ul { margin: 0 0 8px 0; line-height: 1.5; color: #222; font-size: 10.5pt; }
+            .job-card ul { padding-left: 18px; }
+
+            /* Skills */
             .skills-grid { display: block; }
-            .skill-card { border: none; padding: 0; margin-bottom: 10px; box-shadow: none; }
-            .skill-card h3 { font-size: 10.5pt; color: #000; margin-bottom: 3px; }
-            .skill-card p { line-height: 1.4; margin: 0; color: #000; }
+            .skill-card { border: none; padding: 0; margin-bottom: 15px; box-shadow: none; background: transparent; }
+            .skill-card h3 { font-size: 11pt; color: #000; margin-bottom: 4px; font-weight: bold; }
+            .skill-card p { line-height: 1.5; margin: 0; color: #222; }
 
+            /* Printing Rules */
             .job-card, .skill-card { page-break-inside: avoid; }
             h2 { page-break-after: avoid; }
-            
             .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
         }
     </style>
@@ -622,11 +678,11 @@
             <div class="header-text">
                 <h1>Tom Bonte</h1>
                 <div class="contact-info">
-                    <span>📍 Cabo de Palos, Murcia, Spain</span>
-                    <span>🇧🇪 Belgian</span>
-                    <span>🎂 Feb 26, 1989 (Waregem)</span>
-                    <span>✉️ tombonte89@gmail.com</span>
-                    <span>📱 +34 604 493 762</span>
+                    <span><span class="emoji">📍</span> Cabo de Palos, Murcia, Spain</span>
+                    <span><span class="emoji">🇧🇪</span> Belgian</span>
+                    <span><span class="emoji">🎂</span> Feb 26, 1989 (Waregem)</span>
+                    <span><span class="emoji">✉️</span> tombonte89@gmail.com</span>
+                    <span><span class="emoji">📱</span> +34 604 493 762</span>
                 </div>
                 
                 <div class="button-group">
@@ -646,51 +702,51 @@
     <div class="content">
 
         <section>
-            <h2 class="reveal">💼 Professional Summary</h2>
+            <h2 class="reveal"><span class="emoji">💼</span> Professional Summary</h2>
             <p class="summary-text reveal">Multilingual Operations and Customer Success professional with an academic background in Engineering and over a decade of experience managing international logistics, high-stakes scheduling, and diverse teams. Proven ability to handle dynamic B2B relationships, crisis de-escalation, and premium customer service across Europe and Latin America. Armed with fluency in six languages, I leverage a data-driven approach to optimize daily operations, mentor multinational staff, and build lasting client trust. Currently seeking to transition this deep operational expertise and high-touch customer management experience into a dynamic role within the tech, SaaS, or logistics sectors.</p>
         </section>
 
         <section>
-            <h2 class="reveal">🌐 Professional Languages</h2>
+            <h2 class="reveal"><span class="emoji">🌐</span> Professional Languages</h2>
             <div class="language-grid">
                 <div class="lang-item reveal">
                     <div class="lang-header">
-                        <div class="lang-identity"><span class="lang-flag">🇳🇱</span> Dutch (Native)</div>
+                        <div class="lang-identity"><span class="lang-flag emoji">🇳🇱</span> Dutch (Native)</div>
                         <span>100%</span>
                     </div>
                     <div class="progress-bg"><div class="progress-fill" data-width="100%"></div></div>
                 </div>
                 <div class="lang-item reveal">
                     <div class="lang-header">
-                        <div class="lang-identity"><span class="lang-flag">🇬🇧</span> English (C2)</div>
+                        <div class="lang-identity"><span class="lang-flag emoji">🇬🇧</span> English (C2)</div>
                         <span>100%</span>
                     </div>
                     <div class="progress-bg"><div class="progress-fill" data-width="100%"></div></div>
                 </div>
                 <div class="lang-item reveal">
                     <div class="lang-header">
-                        <div class="lang-identity"><span class="lang-flag">🇪🇸</span> Spanish (C1)</div>
+                        <div class="lang-identity"><span class="lang-flag emoji">🇪🇸</span> Spanish (C1)</div>
                         <span>85%</span>
                     </div>
                     <div class="progress-bg"><div class="progress-fill" data-width="85%"></div></div>
                 </div>
                 <div class="lang-item reveal">
                     <div class="lang-header">
-                        <div class="lang-identity"><span class="lang-flag">🇫🇷</span> French (B2-C1)</div>
+                        <div class="lang-identity"><span class="lang-flag emoji">🇫🇷</span> French (B2-C1)</div>
                         <span>80%</span>
                     </div>
                     <div class="progress-bg"><div class="progress-fill" data-width="80%"></div></div>
                 </div>
                 <div class="lang-item reveal">
                     <div class="lang-header">
-                        <div class="lang-identity"><span class="lang-flag">🇵🇹</span> Portuguese (B1)</div>
+                        <div class="lang-identity"><span class="lang-flag emoji">🇵🇹</span> Portuguese (B1)</div>
                         <span>60%</span>
                     </div>
                     <div class="progress-bg"><div class="progress-fill" data-width="60%"></div></div>
                 </div>
                 <div class="lang-item reveal">
                     <div class="lang-header">
-                        <div class="lang-identity"><span class="lang-flag">🇩🇪</span> German (B1)</div>
+                        <div class="lang-identity"><span class="lang-flag emoji">🇩🇪</span> German (B1)</div>
                         <span>60%</span>
                     </div>
                     <div class="progress-bg"><div class="progress-fill" data-width="60%"></div></div>
@@ -699,9 +755,14 @@
         </section>
 
         <section class="trip-section reveal">
-            <h2>🌍 The Operational Journey</h2>
+            <h2><span class="emoji">🌍</span> The Operational Journey</h2>
             <div class="trip-container-box">
-                <div id="map"></div>
+                <div id="map-wrapper">
+                    <div id="map"></div>
+                    <div id="question-overlay">
+                        <div class="giant-q">?</div>
+                    </div>
+                </div>
                 
                 <div class="map-ui">
                     <div class="map-ui-header">
@@ -720,7 +781,7 @@
         </section>
 
         <section>
-            <h2 class="reveal">🚀 Professional Experience</h2>
+            <h2 class="reveal"><span class="emoji">🚀</span> Professional Experience</h2>
             
             <div class="timeline">
                 <div class="timeline-line"></div>
@@ -730,11 +791,12 @@
                     <div class="timeline-date">Oct 2024<br>—<br>Present</div>
                     <div class="timeline-dot"></div>
                     <div class="job-card">
-                        <h3 class="job-title">Operations Manager & Lead Instructor</h3>
-                        <div class="job-meta">
-                            <span class="job-company">🏢 Mangamar | Cabo de Palos, Spain</span>
-                            <span class="job-duration">1 year, 5 months</span>
+                        <div class="job-header-top">
+                            <h3 class="job-title">Operations Manager & Lead Instructor</h3>
+                            <span class="job-duration">Oct 2024 — Present (1 yr, 5 mos)</span>
                         </div>
+                        <div class="job-company"><span class="emoji">🏢</span> Mangamar | Cabo de Palos, Spain</div>
+                        
                         <p>Directing daily logistics, operational scheduling, and customer relations for a high-volume marine center. Responsible for managing international client inquiries, coordinating complex booking schedules, and providing on-site issue resolution to ensure seamless service delivery across multiple languages.</p>
                     </div>
                 </div>
@@ -743,11 +805,12 @@
                     <div class="timeline-date">Aug 2018<br>—<br>Oct 2024</div>
                     <div class="timeline-dot"></div>
                     <div class="job-card">
-                        <h3 class="job-title">General Manager & Master Instructor</h3>
-                        <div class="job-meta">
-                            <span class="job-company">🏢 Rich Coast Diving (5* CDC) | Playas del Coco, Costa Rica</span>
-                            <span class="job-duration">6 years, 2 months</span>
+                        <div class="job-header-top">
+                            <h3 class="job-title">General Manager & Master Instructor</h3>
+                            <span class="job-duration">Aug 2018 — Oct 2024 (6 yrs, 2 mos)</span>
                         </div>
+                        <div class="job-company"><span class="emoji">🏢</span> Rich Coast Diving (5* CDC) | Playas del Coco, Costa Rica</div>
+                        
                         <p>Managed all facets of a premier 5-star CDC facility. Handled comprehensive B2C sales, managed the daily scheduling and logistics for three commercial vessels, and drove international client correspondence. Directed a dynamic, multilingual team and oversaw extensive staff training and development programs.</p>
                         <ul>
                             <li>Executed daily operational schedules, dividing clients and staff for optimal resource allocation and safety.</li>
@@ -763,11 +826,12 @@
                     <div class="timeline-date">2016<br>—<br>2018</div>
                     <div class="timeline-dot"></div>
                     <div class="job-card">
-                        <h3 class="job-title">Administrative Assistant & Independent Contractor</h3>
-                        <div class="job-meta">
-                            <span class="job-company">🏢 Veranda's Willems & Freelance | Belgium</span>
-                            <span class="job-duration">2 years</span>
+                        <div class="job-header-top">
+                            <h3 class="job-title">Administrative Assistant & Independent Contractor</h3>
+                            <span class="job-duration">2016 — 2018 (2 yrs)</span>
                         </div>
+                        <div class="job-company"><span class="emoji">🏢</span> Veranda's Willems & Freelance | Belgium</div>
+                        
                         <p>Provided primary administrative and sales support for Veranda's Willems, handling client documentation, internal communications, and office logistics. Concurrently operated as an independent diving contractor, managing end-to-end business operations including marketing, client acquisition, and equipment logistics in complex cold-water conditions.</p>
                         <p>During weekends, worked as a freelance instructor at TODI in Beringen—a unique high-end indoor facility—conducting specialized initiations with complete beginners, heavily focusing on customer psychology, sales, and overcoming client hesitation.</p>
                     </div>
@@ -777,11 +841,12 @@
                     <div class="timeline-date">Sep 2014<br>—<br>Spring 2016</div>
                     <div class="timeline-dot"></div>
                     <div class="job-card">
-                        <h3 class="job-title">Daily Operations Coordinator & Instructor</h3>
-                        <div class="job-meta">
-                            <span class="job-company">🏢 Blue Paradise & Panorama Divers | Hurghada, Egypt</span>
-                            <span class="job-duration">1 year, 8 months</span>
+                        <div class="job-header-top">
+                            <h3 class="job-title">Daily Operations Coordinator & Instructor</h3>
+                            <span class="job-duration">Sep 2014 — Spring 2016 (1 yr, 8 mos)</span>
                         </div>
+                        <div class="job-company"><span class="emoji">🏢</span> Blue Paradise & Panorama Divers | Hurghada, Egypt</div>
+                        
                         <p>Coordinated daily maritime operations for the top-rated marine center in Hurghada. Managed logistics for vessels accommodating 30+ international guests daily. Responsible for client contracts, point-of-sale transactions, and retail merchandise inventory.</p>
                         <p>Led cross-cultural teams, delivered comprehensive safety and logistical briefings to international tourists, and managed dynamic scheduling variables to ensure operational efficiency and exceptional customer satisfaction.</p>
                     </div>
@@ -791,11 +856,12 @@
                     <div class="timeline-date">Oct 2013<br>—<br>Jun 2014</div>
                     <div class="timeline-dot"></div>
                     <div class="job-card">
-                        <h3 class="job-title">Professional Internship & Sales Associate</h3>
-                        <div class="job-meta">
-                            <span class="job-company">🏢 Dressel Divers | Playa del Carmen, Mexico</span>
-                            <span class="job-duration">9 months</span>
+                        <div class="job-header-top">
+                            <h3 class="job-title">Professional Internship & Sales Associate</h3>
+                            <span class="job-duration">Oct 2013 — Jun 2014 (9 mos)</span>
                         </div>
+                        <div class="job-company"><span class="emoji">🏢</span> Dressel Divers | Playa del Carmen, Mexico</div>
+                        
                         <p>Served as a key point of contact in a high-traffic luxury resort. Conducted daily public relations and sales demonstrations, resulting in extensive experience in direct B2C sales and customer engagement. Consistently ranked as the top-selling intern through proactive communication and enthusiasm.</p>
                     </div>
                 </div>
@@ -804,11 +870,12 @@
                     <div class="timeline-date">Jul 2012<br>—<br>Aug 2012</div>
                     <div class="timeline-dot"></div>
                     <div class="job-card">
-                        <h3 class="job-title">Marine Data Collection Volunteer</h3>
-                        <div class="job-meta">
-                            <span class="job-company">🏢 Conservation Project | Koh Rong, Cambodia</span>
-                            <span class="job-duration">2 months</span>
+                        <div class="job-header-top">
+                            <h3 class="job-title">Marine Data Collection Volunteer</h3>
+                            <span class="job-duration">Jul 2012 — Aug 2012 (2 mos)</span>
                         </div>
+                        <div class="job-company"><span class="emoji">🏢</span> Conservation Project | Koh Rong, Cambodia</div>
+                        
                         <p>Participated in a scientific data collection initiative, building databases for future environmental research. Engaged in community development by building local facilities and teaching English to community members.</p>
                     </div>
                 </div>
@@ -817,57 +884,57 @@
         </section>
 
         <section>
-            <h2 class="reveal">📚 Academic Background</h2>
+            <h2 class="reveal"><span class="emoji">📚</span> Academic Background</h2>
             <div class="edu-container">
                 <div class="job-card reveal">
-                    <h3 class="job-title">Industrial Engineering (Bachelor Studies)</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🎓 Groep T (KU Leuven Campus) | Leuven, Belgium</span>
-                        <span class="job-duration">Sep 2009 – Jun 2013</span>
+                    <div class="job-header-top">
+                        <h3 class="job-title">Industrial Engineering (Bachelor Studies)</h3>
+                        <span class="job-duration">Sep 2009 — Jun 2013</span>
                     </div>
+                    <div class="job-company"><span class="emoji">🎓</span> Groep T (KU Leuven Campus) | Leuven, Belgium</div>
                     <p>Completed four years of rigorous study within the Industrial Engineering program, developing strong analytical, problem-solving, and computational skills before transitioning to a full-time professional career.</p>
                 </div>
 
                 <div class="job-card reveal">
-                    <h3 class="job-title">Civil Engineering (Bachelor Studies)</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🎓 KU Leuven (KUL) | Leuven, Belgium</span>
-                        <span class="job-duration">Sep 2007 – Jun 2009</span>
+                    <div class="job-header-top">
+                        <h3 class="job-title">Civil Engineering (Bachelor Studies)</h3>
+                        <span class="job-duration">Sep 2007 — Jun 2009</span>
                     </div>
+                    <div class="job-company"><span class="emoji">🎓</span> KU Leuven (KUL) | Leuven, Belgium</div>
                     <p>Initiated university education in Civil Engineering (Burgerlijk Ingenieur), forming a strong foundation in advanced mathematics and exact sciences.</p>
                 </div>
 
                 <div class="job-card reveal">
-                    <h3 class="job-title">High School Degree (Sciences-Mathematics)</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🎓 Heilig-Hartcollege (HHC) | Waregem, Belgium</span>
-                        <span class="job-duration">Sep 2001 – Jun 2007</span>
+                    <div class="job-header-top">
+                        <h3 class="job-title">High School Degree (Sciences-Mathematics)</h3>
+                        <span class="job-duration">Sep 2001 — Jun 2007</span>
                     </div>
+                    <div class="job-company"><span class="emoji">🎓</span> Heilig-Hartcollege (HHC) | Waregem, Belgium</div>
                     <p>Followed a highly rigorous academic path. Progression: Latin A, Greek-Latin, Latin-Mathematics, and Sciences-Mathematics (8 hours of Math). Graduated as Laureate.</p>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2 class="reveal">💡 Additional Expertise</h2>
+            <h2 class="reveal"><span class="emoji">💡</span> Additional Expertise</h2>
             <div class="skills-grid">
                 <div class="skill-card reveal">
-                    <h3>💻 IT & Technical Literacy</h3>
+                    <h3><span class="emoji">💻</span> IT & Technical Literacy</h3>
                     <p>Possess a strong engineering-based approach to technology. Expert in <strong>MS Office Suite</strong>, proficient in <strong>Adobe Photoshop</strong>, and experienced with basic web design. Capable of programming in <strong>Java</strong>, <strong>JavaScript</strong>, and <strong>C</strong>.</p>
                 </div>
 
                 <div class="skill-card reveal">
-                    <h3>🗣️ Corporate Language Coaching</h3>
+                    <h3><span class="emoji">🗣️</span> Corporate Language Coaching</h3>
                     <p>Passionate about linguistics and structural learning. Since 2018, I have organized and led training sessions to teach international staff and interns efficient methodologies for self-studying Spanish and other languages, enhancing team communication.</p>
                 </div>
 
                 <div class="skill-card reveal">
-                    <h3>📸 Commercial Photography</h3>
+                    <h3><span class="emoji">📸</span> Commercial Photography</h3>
                     <p>Practicing photographer since 2006. Highly experienced in operating complex camera rigs (Canon EOS 7D, Ikelite housings) in challenging environments. Skilled in macro and wide-angle composition, often utilized for company marketing materials.</p>
                 </div>
 
                 <div class="skill-card reveal">
-                    <h3>⚙️ Advanced Technical Training</h3>
+                    <h3><span class="emoji">⚙️</span> Advanced Technical Training</h3>
                     <p>Continuously pursuing professional development. Certified in Advanced Rebreather operations (Poseidon MkVI), demonstrating an aptitude for mastering highly complex, life-support hardware systems and adapting to entirely new operational paradigms.</p>
                 </div>
             </div>
@@ -881,7 +948,6 @@
         // Progress bar animation for languages
         const progressBars = document.querySelectorAll('.progress-fill');
         
-        // Custom animation function to run when printing or revealing
         const fillBars = () => {
             progressBars.forEach(bar => {
                 const width = bar.getAttribute('data-width');
@@ -903,7 +969,7 @@
             progressObserver.observe(bar);
         });
 
-        // Scroll Reveal animation for all elements with .reveal class
+        // Scroll Reveal animation
         const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -932,7 +998,6 @@
                 const progressEl = timeline.querySelector('.timeline-progress');
                 const rect = timeline.getBoundingClientRect();
                 
-                // Calculate progress based on viewport center hitting the timeline top
                 let progress = (windowHeight * 0.6 - rect.top) / rect.height;
                 progress = Math.max(0, Math.min(1, progress));
                 
@@ -943,7 +1008,7 @@
 
             window.addEventListener('scroll', handleScroll);
             window.addEventListener('resize', handleScroll);
-            handleScroll(); // Initial check
+            handleScroll();
         }
 
         // ------------------------------------
@@ -972,7 +1037,7 @@
                 { title: "Cabo de Palos, Spain", date: "Oct 2024 – Present (1 Yr, 5 Mos)", lat: 37.6333, lng: -0.6983, zoom: 5, 
                   desc: "Operations Manager at Mangamar. Currently directing high-volume marine logistics, complex scheduling, and international client relations." },
                 
-                { title: "The Next Pivot", date: "2026 & Beyond", lat: 40.4168, lng: -3.7038, zoom: 3, 
+                { title: "The Next Pivot", date: "2026 & Beyond", lat: 40.4168, lng: -3.7038, zoom: 3, isQuestion: true,
                   desc: "After 13 years scaling operations globally, I am ready for the next challenge. Bringing an engineering brain, crisis management, and linguistic fluency to the corporate sector." }
             ];
 
@@ -985,6 +1050,7 @@
             const progressEl = document.getElementById('tripProgress');
             const btnNext = document.getElementById('tripNext');
             const btnPrev = document.getElementById('tripPrev');
+            const questionOverlay = document.getElementById('question-overlay');
 
             const dotHtml = "<div class='custom-dot'></div>";
             const activeDotHtml = "<div class='custom-dot active'></div>";
@@ -992,11 +1058,12 @@
             const standardIcon = L.divIcon({ className: '', html: dotHtml, iconSize: [14, 14], iconAnchor: [7, 7] });
             const activeIcon = L.divIcon({ className: '', html: activeDotHtml, iconSize: [14, 14], iconAnchor: [7, 7] });
 
+            // Removed restrictions to allow panning/zooming
             let map = L.map('map', {
-                zoomControl: false, 
-                scrollWheelZoom: false,
-                dragging: false,
-                doubleClickZoom: false
+                zoomControl: true, 
+                scrollWheelZoom: true,
+                dragging: true,
+                doubleClickZoom: true
             }).setView([stops[0].lat, stops[0].lng], stops[0].zoom);
 
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -1026,8 +1093,18 @@
                 currentStop = index;
                 updateMapUI(currentStop);
 
+                // Handle the Giant Question Mark Overlay for Step 8
+                if (stops[currentStop].isQuestion) {
+                    questionOverlay.classList.add('visible');
+                } else {
+                    questionOverlay.classList.remove('visible');
+                }
+
                 markerElements.forEach((marker, i) => {
-                    if (i === currentStop) {
+                    // Hide the standard marker completely if it's the question mark step
+                    if (stops[currentStop].isQuestion && i === currentStop) {
+                        marker.setOpacity(0);
+                    } else if (i === currentStop) {
                         marker.setOpacity(1);
                         marker.setIcon(activeIcon);
                     } else if (i < currentStop) {
