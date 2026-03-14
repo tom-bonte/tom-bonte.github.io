@@ -171,60 +171,102 @@
             transition: width 1.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Timeline & Experience styles */
+        /* Interactive Timeline styles (Work Experience Only) */
         .timeline {
             position: relative;
-            padding-left: 30px;
+            margin-top: 40px;
         }
 
-        .timeline::before {
-            content: '';
+        .timeline-line {
             position: absolute;
-            left: 0;
+            left: 140px;
             top: 5px;
             bottom: 0;
-            width: 2px;
-            background: var(--accent-color);
+            width: 3px;
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+        
+        .timeline-progress {
+            position: absolute;
+            left: 140px;
+            top: 5px;
+            width: 3px;
+            background: var(--secondary-color);
+            height: 0%; /* Filled via JS on scroll */
+            transition: height 0.15s ease-out;
+            z-index: 1;
+            border-radius: 3px;
         }
 
-        .job-card {
+        .timeline-item {
             position: relative;
             margin-bottom: 40px;
+            padding-left: 180px; /* Space for dates + line */
+        }
+
+        .timeline-date {
+            position: absolute;
+            left: 0;
+            top: 25px;
+            width: 110px;
+            text-align: right;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .timeline-date span {
+            display: block;
+            font-size: 0.8em;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 133px; /* 140 - 7 */
+            top: 30px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 4px solid var(--border-color);
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        /* State when timeline item is active/scrolled into view */
+        .timeline-item.active .timeline-dot {
+            background: var(--secondary-color);
+            border-color: #fff;
+            box-shadow: 0 0 0 4px var(--accent-color);
+        }
+
+        /* Base Card Styling (Used for Jobs and Education) */
+        .job-card {
             padding: 30px;
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
             transition: all 0.3s ease;
+            margin-bottom: 25px;
         }
 
-        .job-card::before {
-            content: '';
-            position: absolute;
-            left: -35px;
-            top: 35px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--secondary-color);
-            border: 4px solid var(--card-bg);
-            box-shadow: 0 0 0 2px var(--accent-color);
-            transition: all 0.3s ease;
+        .timeline-item .job-card {
+            margin-bottom: 0; /* Margin handled by timeline-item */
         }
 
         .job-card:hover {
-            transform: translateX(5px);
+            transform: translateY(-3px) translateX(3px);
             border-color: #cbd5e1;
             box-shadow: 0 12px 20px rgba(0,0,0,0.06);
         }
 
-        .job-card:hover::before {
-            background: var(--card-bg);
-            border-color: var(--secondary-color);
-        }
-
         .job-title {
-            font-size: 1.4em;
+            font-size: 1.35em;
             font-weight: 700;
             color: var(--primary-color);
             margin: 0 0 8px 0;
@@ -238,7 +280,7 @@
             font-size: 0.95em;
             color: var(--secondary-color);
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .job-company {
@@ -272,7 +314,6 @@
             margin-bottom: 8px;
         }
 
-        /* Credentials inside Work Experience */
         .cred-box {
             background: #f1f5f9;
             border-left: 3px solid var(--secondary-color);
@@ -284,6 +325,13 @@
 
         .cred-box strong {
             color: var(--primary-color);
+        }
+
+        /* Education Layout (No timeline line) */
+        .edu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         /* Skills Grid */
@@ -335,11 +383,34 @@
             .content {
                 padding: 30px 20px;
             }
-            .timeline {
-                padding-left: 20px;
+            .timeline-line, .timeline-progress {
+                left: 20px;
             }
-            .job-card::before {
-                left: -26px;
+            .timeline-item {
+                padding-left: 45px;
+            }
+            .timeline-date {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: auto;
+                text-align: left;
+                margin-bottom: 12px;
+                display: inline-block;
+                background: var(--accent-color);
+                padding: 4px 12px;
+                border-radius: 20px;
+                color: var(--secondary-color);
+            }
+            .timeline-date span {
+                display: inline;
+                margin-left: 6px;
+                color: var(--secondary-color);
+                opacity: 0.8;
+            }
+            .timeline-dot {
+                left: 13px;
+                top: 40px;
             }
             .skills-grid {
                 grid-template-columns: 1fr;
@@ -420,71 +491,97 @@
             <h2 class="reveal">🚀 Professional Experience</h2>
             
             <div class="timeline">
-                
-                <div class="job-card reveal">
-                    <h3 class="job-title">Operations Manager & Lead Instructor</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🏢 Mangamar | Cabo de Palos, Spain</span>
-                        <span class="job-duration">Oct 2024 – Present (18 months)</span>
-                    </div>
-                    <p>Directing daily logistics, operational scheduling, and customer relations for a high-volume marine center. Responsible for managing international client inquiries, coordinating complex booking schedules, and providing on-site issue resolution to ensure seamless service delivery across multiple languages.</p>
-                </div>
+                <div class="timeline-line"></div>
+                <div class="timeline-progress"></div>
 
-                <div class="job-card reveal">
-                    <h3 class="job-title">General Manager & Master Instructor</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🏢 Rich Coast Diving (5* CDC) | Playas del Coco, Costa Rica</span>
-                        <span class="job-duration">Aug 2018 – Oct 2024 (74 months)</span>
-                    </div>
-                    <p>Managed all facets of a premier 5-star CDC facility. Handled comprehensive B2C sales, managed the daily scheduling and logistics for three commercial vessels, and drove international client correspondence. Directed a dynamic, multilingual team and oversaw extensive staff training and development programs.</p>
-                    <ul>
-                        <li>Executed daily operational schedules, dividing clients and staff for optimal resource allocation and safety.</li>
-                        <li>Managed administrative duties including monthly accounting, payment processing, inventory control, and supply chain logistics for equipment.</li>
-                        <li>Led B2B relations, making phone calls in multiple languages to coordinate with hotels, tour representatives, and equipment suppliers.</li>
-                        <li>Drove digital marketing efforts, handling social media management and media editing.</li>
-                        <li>Mentored and developed staff, guiding candidates through leadership internships and shaping professional industry standards.</li>
-                    </ul>
-                    <div class="cred-box">
-                        <strong>🏆 Integrated Credentials:</strong> Achieved <em>PADI Master Instructor (#345946)</em> and <em>SSI Assistant Instructor Trainer</em>. Taught 500+ official certifications and logged over 2000+ dives during this tenure. Held 15+ specialized instructional ratings.
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">Oct 2024<br>—<br>Present</div>
+                    <div class="timeline-dot"></div>
+                    <div class="job-card">
+                        <h3 class="job-title">Operations Manager & Lead Instructor</h3>
+                        <div class="job-meta">
+                            <span class="job-company">🏢 Mangamar | Cabo de Palos, Spain</span>
+                            <span class="job-duration">1 year, 5 months</span>
+                        </div>
+                        <p>Directing daily logistics, operational scheduling, and customer relations for a high-volume marine center. Responsible for managing international client inquiries, coordinating complex booking schedules, and providing on-site issue resolution to ensure seamless service delivery across multiple languages.</p>
                     </div>
                 </div>
 
-                <div class="job-card reveal">
-                    <h3 class="job-title">Administrative Assistant & Independent Contractor</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🏢 Veranda's Willems & Freelance | Belgium</span>
-                        <span class="job-duration">2016 – 2018 (24 months)</span>
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">Aug 2018<br>—<br>Oct 2024</div>
+                    <div class="timeline-dot"></div>
+                    <div class="job-card">
+                        <h3 class="job-title">General Manager & Master Instructor</h3>
+                        <div class="job-meta">
+                            <span class="job-company">🏢 Rich Coast Diving (5* CDC) | Playas del Coco, Costa Rica</span>
+                            <span class="job-duration">6 years, 2 months</span>
+                        </div>
+                        <p>Managed all facets of a premier 5-star CDC facility. Handled comprehensive B2C sales, managed the daily scheduling and logistics for three commercial vessels, and drove international client correspondence. Directed a dynamic, multilingual team and oversaw extensive staff training and development programs.</p>
+                        <ul>
+                            <li>Executed daily operational schedules, dividing clients and staff for optimal resource allocation and safety.</li>
+                            <li>Managed administrative duties including monthly accounting, payment processing, inventory control, and supply chain logistics for equipment.</li>
+                            <li>Led B2B relations, making phone calls in multiple languages to coordinate with hotels, tour representatives, and equipment suppliers.</li>
+                            <li>Drove digital marketing efforts, handling social media management and media editing.</li>
+                            <li>Mentored and developed staff, guiding candidates through leadership internships and shaping professional industry standards.</li>
+                        </ul>
+                        <div class="cred-box">
+                            <strong>🏆 Integrated Credentials:</strong> Achieved <em>PADI Master Instructor (#345946)</em> and <em>SSI Assistant Instructor Trainer</em>. Taught 500+ official certifications and logged over 2000+ dives during this tenure. Held 15+ specialized instructional ratings.
+                        </div>
                     </div>
-                    <p>Provided primary administrative and sales support for Veranda's Willems, handling client documentation, internal communications, and office logistics. Concurrently operated as an independent diving contractor, managing end-to-end business operations including marketing, client acquisition, and equipment logistics in complex cold-water conditions.</p>
-                    <p>During weekends, worked as a freelance instructor at TODI in Beringen—a unique high-end indoor facility—conducting specialized initiations with complete beginners, heavily focusing on customer psychology, sales, and overcoming client hesitation.</p>
                 </div>
 
-                <div class="job-card reveal">
-                    <h3 class="job-title">Daily Operations Coordinator & Instructor</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🏢 Blue Paradise & Panorama Divers | Hurghada, Egypt</span>
-                        <span class="job-duration">Sep 2014 – Spring 2016 (20 months)</span>
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">2016<br>—<br>2018</div>
+                    <div class="timeline-dot"></div>
+                    <div class="job-card">
+                        <h3 class="job-title">Administrative Assistant & Independent Contractor</h3>
+                        <div class="job-meta">
+                            <span class="job-company">🏢 Veranda's Willems & Freelance | Belgium</span>
+                            <span class="job-duration">2 years</span>
+                        </div>
+                        <p>Provided primary administrative and sales support for Veranda's Willems, handling client documentation, internal communications, and office logistics. Concurrently operated as an independent diving contractor, managing end-to-end business operations including marketing, client acquisition, and equipment logistics in complex cold-water conditions.</p>
+                        <p>During weekends, worked as a freelance instructor at TODI in Beringen—a unique high-end indoor facility—conducting specialized initiations with complete beginners, heavily focusing on customer psychology, sales, and overcoming client hesitation.</p>
                     </div>
-                    <p>Coordinated daily maritime operations for the top-rated marine center in Hurghada. Managed logistics for vessels accommodating 30+ international guests daily. Responsible for client contracts, point-of-sale transactions, and retail merchandise inventory.</p>
-                    <p>Led cross-cultural teams, delivered comprehensive safety and logistical briefings to international tourists, and managed dynamic scheduling variables to ensure operational efficiency and exceptional customer satisfaction.</p>
                 </div>
 
-                <div class="job-card reveal">
-                    <h3 class="job-title">Professional Internship & Sales Associate</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🏢 Dressel Divers | Playa del Carmen, Mexico</span>
-                        <span class="job-duration">Oct 2013 – Jun 2014 (9 months)</span>
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">Sep 2014<br>—<br>Spring 2016</div>
+                    <div class="timeline-dot"></div>
+                    <div class="job-card">
+                        <h3 class="job-title">Daily Operations Coordinator & Instructor</h3>
+                        <div class="job-meta">
+                            <span class="job-company">🏢 Blue Paradise & Panorama Divers | Hurghada, Egypt</span>
+                            <span class="job-duration">1 year, 8 months</span>
+                        </div>
+                        <p>Coordinated daily maritime operations for the top-rated marine center in Hurghada. Managed logistics for vessels accommodating 30+ international guests daily. Responsible for client contracts, point-of-sale transactions, and retail merchandise inventory.</p>
+                        <p>Led cross-cultural teams, delivered comprehensive safety and logistical briefings to international tourists, and managed dynamic scheduling variables to ensure operational efficiency and exceptional customer satisfaction.</p>
                     </div>
-                    <p>Served as a key point of contact in a high-traffic luxury resort. Conducted daily public relations and sales demonstrations, resulting in extensive experience in direct B2C sales and customer engagement. Consistently ranked as the top-selling intern through proactive communication and enthusiasm.</p>
                 </div>
 
-                <div class="job-card reveal">
-                    <h3 class="job-title">Marine Data Collection Volunteer</h3>
-                    <div class="job-meta">
-                        <span class="job-company">🏢 Conservation Project | Koh Rong, Cambodia</span>
-                        <span class="job-duration">Jul 2012 – Aug 2012 (2 months)</span>
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">Oct 2013<br>—<br>Jun 2014</div>
+                    <div class="timeline-dot"></div>
+                    <div class="job-card">
+                        <h3 class="job-title">Professional Internship & Sales Associate</h3>
+                        <div class="job-meta">
+                            <span class="job-company">🏢 Dressel Divers | Playa del Carmen, Mexico</span>
+                            <span class="job-duration">9 months</span>
+                        </div>
+                        <p>Served as a key point of contact in a high-traffic luxury resort. Conducted daily public relations and sales demonstrations, resulting in extensive experience in direct B2C sales and customer engagement. Consistently ranked as the top-selling intern through proactive communication and enthusiasm.</p>
                     </div>
-                    <p>Participated in a scientific data collection initiative, building databases for future environmental research. Engaged in community development by building local facilities and teaching English to community members.</p>
+                </div>
+
+                <div class="timeline-item reveal">
+                    <div class="timeline-date">Jul 2012<br>—<br>Aug 2012</div>
+                    <div class="timeline-dot"></div>
+                    <div class="job-card">
+                        <h3 class="job-title">Marine Data Collection Volunteer</h3>
+                        <div class="job-meta">
+                            <span class="job-company">🏢 Conservation Project | Koh Rong, Cambodia</span>
+                            <span class="job-duration">2 months</span>
+                        </div>
+                        <p>Participated in a scientific data collection initiative, building databases for future environmental research. Engaged in community development by building local facilities and teaching English to community members.</p>
+                    </div>
                 </div>
 
             </div>
@@ -492,7 +589,7 @@
 
         <section>
             <h2 class="reveal">📚 Academic Background</h2>
-            <div class="timeline">
+            <div class="edu-container">
                 <div class="job-card reveal">
                     <h3 class="job-title">Industrial Engineering (Bachelor Studies)</h3>
                     <div class="job-meta">
@@ -552,7 +649,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Progress bar animation
+        // Progress bar animation for languages
         const progressBars = document.querySelectorAll('.progress-fill');
         const progressObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -568,7 +665,7 @@
             progressObserver.observe(bar);
         });
 
-        // Scroll Reveal animation for cards and sections
+        // Scroll Reveal animation for all elements with .reveal class
         const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -582,6 +679,28 @@
         revealElements.forEach(el => {
             revealObserver.observe(el);
         });
+
+        // Interactive Timeline Scroll Progress
+        const timeline = document.querySelector('.timeline');
+        if (timeline) {
+            const handleScroll = () => {
+                const windowHeight = window.innerHeight;
+                const progressEl = timeline.querySelector('.timeline-progress');
+                const rect = timeline.getBoundingClientRect();
+                
+                // Calculate progress based on viewport center hitting the timeline top
+                let progress = (windowHeight * 0.6 - rect.top) / rect.height;
+                progress = Math.max(0, Math.min(1, progress));
+                
+                if (progressEl) {
+                    progressEl.style.height = `${progress * 100}%`;
+                }
+            };
+
+            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('resize', handleScroll);
+            handleScroll(); // Initial check
+        }
     });
 </script>
 
