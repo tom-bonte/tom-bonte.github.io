@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tom Bonte | Get To Know Me</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #0f172a; 
@@ -36,52 +36,65 @@
             overflow: hidden;
         }
 
+        /* Redesigned Modern Header */
         header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #1e293b 100%);
+            background: radial-gradient(circle at top right, #1e293b, var(--primary-color));
             color: white;
-            padding: 40px 50px;
-            text-align: center;
+            padding: 40px 60px 50px 60px;
             position: relative;
+            border-bottom: 4px solid var(--secondary-color);
         }
 
-        header h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.8em;
-            font-weight: 700;
-        }
-
-        header p {
-            color: #cbd5e1;
-            font-size: 1.1em;
-            font-weight: 300;
-            margin: 0;
+        .header-top {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 30px;
         }
 
         .btn-back {
-            position: absolute;
-            top: 40px;
-            left: 40px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
+            color: #94a3b8;
             text-decoration: none;
             font-weight: 500;
-            transition: background 0.3s ease;
+            font-size: 0.95em;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .btn-back:hover {
-            background: rgba(255,255,255,0.2);
+            color: #ffffff;
+            transform: translateX(-4px);
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 15px 0;
+            font-size: 3.5em;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: #94a3b8;
+            font-size: 1.15em;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
         }
 
         .content {
             padding: 50px;
         }
 
-        /* 3D Cover Flow Carousel Styles */
+        /* 3D Cover Flow Carousel Styles (No Dots) */
         .carousel-container {
             position: relative;
             width: 100%;
@@ -127,7 +140,6 @@
             display: block;
         }
 
-        /* Active (Center) Slide */
         .carousel-slide.active {
             opacity: 1;
             z-index: 3;
@@ -137,7 +149,6 @@
             cursor: default;
         }
 
-        /* Previous (Left) Slide */
         .carousel-slide.prev {
             opacity: 0.8;
             z-index: 2;
@@ -145,7 +156,6 @@
             filter: blur(2px) brightness(0.8);
         }
 
-        /* Next (Right) Slide */
         .carousel-slide.next {
             opacity: 0.8;
             z-index: 2;
@@ -177,30 +187,6 @@
 
         .prev-btn { left: 20px; }
         .next-btn { right: 20px; }
-
-        .carousel-dots {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-            z-index: 10;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: background 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .dot.active {
-            background: white;
-        }
 
         /* Typography & Layout */
         h2 {
@@ -268,8 +254,10 @@
 
         @media (max-width: 768px) {
             .container { margin: 20px; }
-            .btn-back { position: relative; top: 0; left: 0; margin-bottom: 20px; }
-            header { padding: 30px 20px; display: flex; flex-direction: column; align-items: center; }
+            header { padding: 30px 20px; }
+            header h1 { font-size: 2.5em; }
+            .header-top { justify-content: center; margin-bottom: 20px; }
+            .btn-back:hover { transform: none; }
             .content { padding: 25px; }
             .carousel-container { height: 300px; }
             .carousel-slide { width: 70%; }
@@ -280,12 +268,16 @@
 
 <div class="container">
     <header>
-        <a href="index.html" class="btn-back">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            Back to Resume
-        </a>
-        <h1>Beyond the Resume</h1>
-        <p>A look into my journey, passions, and life outside of work.</p>
+        <div class="header-top">
+            <a href="index.html" class="btn-back">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Back to Resume
+            </a>
+        </div>
+        <div class="header-content">
+            <h1>Beyond the Resume</h1>
+            <p>A look into my journey, passions, and life outside of work.</p>
+        </div>
     </header>
 
     <div class="content">
@@ -313,13 +305,6 @@
             <button class="carousel-btn next-btn">
                 <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
-
-            <div class="carousel-dots">
-                <div class="dot active" data-index="0"></div>
-                <div class="dot" data-index="1"></div>
-                <div class="dot" data-index="2"></div>
-                <div class="dot" data-index="3"></div>
-            </div>
         </div>
 
         <section class="bio-section">
@@ -364,12 +349,11 @@
 </div>
 
 <script>
-    // 3D Cover Flow Carousel Functionality
+    // 3D Cover Flow Carousel Functionality (Manual Only)
     document.addEventListener("DOMContentLoaded", function() {
         const slides = Array.from(document.querySelectorAll('.carousel-slide'));
         const nextButton = document.querySelector('.next-btn');
         const prevButton = document.querySelector('.prev-btn');
-        const dots = Array.from(document.querySelectorAll('.dot'));
         
         let currentIndex = 0;
 
@@ -387,10 +371,6 @@
                     slide.classList.add('next');
                 }
             });
-
-            // Update dots
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[index].classList.add('active');
         }
 
         nextButton.addEventListener('click', () => {
@@ -401,13 +381,6 @@
         prevButton.addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + slides.length) % slides.length;
             updateCarousel(currentIndex);
-        });
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                currentIndex = index;
-                updateCarousel(currentIndex);
-            });
         });
 
         // Make side images clickable to bring them to the front
@@ -422,12 +395,6 @@
 
         // Initialize Carousel
         updateCarousel(currentIndex);
-
-        // Optional Auto-play
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateCarousel(currentIndex);
-        }, 5000); 
     });
 </script>
 
