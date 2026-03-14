@@ -40,24 +40,47 @@
         header {
             background: linear-gradient(135deg, var(--primary-color) 0%, #1e293b 100%);
             color: white;
-            padding: 60px 50px;
-            text-align: center;
+            padding: 50px 60px;
             position: relative;
         }
 
+        .header-inner {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .profile-pic-container {
+            flex-shrink: 0;
+        }
+
+        .profile-pic {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background-color: var(--card-bg);
+        }
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+        }
+
         header h1 {
-            margin: 0 0 15px 0;
+            margin: 0 0 12px 0;
             font-size: 3.2em;
             font-weight: 700;
             letter-spacing: -0.5px;
+            line-height: 1.1;
         }
 
         .contact-info {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px 25px;
-            margin-bottom: 20px;
+            gap: 12px 24px;
             font-size: 1.05em;
             color: #cbd5e1;
             font-weight: 300;
@@ -67,22 +90,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .personal-tags {
-            display: inline-flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .tag-pill {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 500;
-            color: #e2e8f0;
-            backdrop-filter: blur(5px);
         }
 
         /* Layout */
@@ -380,6 +387,17 @@
                 margin: 20px;
                 border-radius: 12px;
             }
+            header {
+                padding: 40px 30px;
+            }
+            .header-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            .contact-info {
+                justify-content: center;
+            }
             .content {
                 padding: 30px 20px;
             }
@@ -422,18 +440,21 @@
 
 <div class="container">
     <header>
-        <h1 class="reveal">Tom Bonte</h1>
-        <div class="contact-info reveal">
-            <span>📍 Gran Alacant, Spain</span>
-            <span>🇧🇪 Belgian</span>
-            <span>🎂 Feb 26, 1989 (Waregem)</span>
-            <span>✉️ tombonte89@gmail.com</span>
-            <span>📱 +34 604 493 762</span>
-        </div>
-        <div class="personal-tags reveal">
-            <span class="tag-pill">Non Smoker</span>
-            <span class="tag-pill">No Tattoos/Piercings</span>
-            <span class="tag-pill">Willing to Relocate</span>
+        <div class="header-inner reveal">
+            <div class="profile-pic-container">
+                <!-- Replace the src attribute below with the RAW GitHub link to your picture -->
+                <img src="https://github.com/tom-bonte/tom-bonte.github.io/blob/main/504145975_10161081228477181_7526414576954565550_n.png?raw=true" alt="Tom Bonte" class="profile-pic">
+            </div>
+            <div class="header-text">
+                <h1>Tom Bonte</h1>
+                <div class="contact-info">
+                    <span>📍 Cabo de Palos, Murcia, Spain</span>
+                    <span>🇧🇪 Belgian</span>
+                    <span>🎂 Feb 26, 1989 (Waregem)</span>
+                    <span>✉️ tombonte89@gmail.com</span>
+                    <span>📱 +34 604 493 762</span>
+                </div>
+            </div>
         </div>
     </header>
 
