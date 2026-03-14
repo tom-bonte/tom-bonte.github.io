@@ -92,6 +92,29 @@
             gap: 8px;
         }
 
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            width: fit-content;
+        }
+
+        .btn-download:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
         /* Layout */
         .content {
             padding: 50px;
@@ -119,6 +142,13 @@
 
         h2:first-child {
             margin-top: 0;
+        }
+
+        .summary-text {
+            font-size: 1.1em;
+            color: var(--text-main);
+            line-height: 1.7;
+            margin-bottom: 30px;
         }
 
         /* Interactive Language Bars */
@@ -173,12 +203,12 @@
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--secondary-color), #60a5fa);
-            width: 0; /* Starts at 0 for animation */
+            width: 0;
             border-radius: 4px;
             transition: width 1.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Interactive Timeline styles (Work Experience Only) */
+        /* Interactive Timeline styles */
         .timeline {
             position: relative;
             margin-top: 40px;
@@ -200,7 +230,7 @@
             top: 5px;
             width: 3px;
             background: var(--secondary-color);
-            height: 0%; /* Filled via JS on scroll */
+            height: 0%;
             transition: height 0.15s ease-out;
             z-index: 1;
             border-radius: 3px;
@@ -209,7 +239,7 @@
         .timeline-item {
             position: relative;
             margin-bottom: 40px;
-            padding-left: 180px; /* Space for dates + line */
+            padding-left: 180px;
         }
 
         .timeline-date {
@@ -233,7 +263,7 @@
 
         .timeline-dot {
             position: absolute;
-            left: 133px; /* 140 - 7 */
+            left: 133px;
             top: 30px;
             width: 13px;
             height: 13px;
@@ -244,14 +274,13 @@
             transition: all 0.4s ease;
         }
 
-        /* State when timeline item is active/scrolled into view */
         .timeline-item.active .timeline-dot {
             background: var(--secondary-color);
             border-color: #fff;
             box-shadow: 0 0 0 4px var(--accent-color);
         }
 
-        /* Base Card Styling (Used for Jobs and Education) */
+        /* Base Card Styling */
         .job-card {
             padding: 30px;
             background: #fff;
@@ -263,7 +292,7 @@
         }
 
         .timeline-item .job-card {
-            margin-bottom: 0; /* Margin handled by timeline-item */
+            margin-bottom: 0;
         }
 
         .job-card:hover {
@@ -321,20 +350,7 @@
             margin-bottom: 8px;
         }
 
-        .cred-box {
-            background: #f1f5f9;
-            border-left: 3px solid var(--secondary-color);
-            padding: 15px 20px;
-            margin-top: 20px;
-            border-radius: 0 8px 8px 0;
-            font-size: 0.9em;
-        }
-
-        .cred-box strong {
-            color: var(--primary-color);
-        }
-
-        /* Education Layout (No timeline line) */
+        /* Education Layout */
         .edu-container {
             display: flex;
             flex-direction: column;
@@ -382,57 +398,40 @@
             transform: translateY(0);
         }
 
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .container {
-                margin: 20px;
-                border-radius: 12px;
-            }
-            header {
-                padding: 40px 30px;
-            }
-            .header-inner {
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-            }
-            .contact-info {
-                justify-content: center;
-            }
-            .content {
-                padding: 30px 20px;
-            }
-            .timeline-line, .timeline-progress {
-                left: 20px;
-            }
-            .timeline-item {
-                padding-left: 45px;
-            }
+            .container { margin: 20px; border-radius: 12px; }
+            header { padding: 40px 30px; }
+            .header-inner { flex-direction: column; text-align: center; gap: 20px; }
+            .contact-info { justify-content: center; }
+            .btn-download { margin: 20px auto 0 auto; }
+            .content { padding: 30px 20px; }
+            .timeline-line, .timeline-progress { left: 20px; }
+            .timeline-item { padding-left: 45px; }
             .timeline-date {
-                position: relative;
-                top: 0;
-                left: 0;
-                width: auto;
-                text-align: left;
-                margin-bottom: 12px;
-                display: inline-block;
-                background: var(--accent-color);
-                padding: 4px 12px;
-                border-radius: 20px;
-                color: var(--secondary-color);
+                position: relative; top: 0; left: 0; width: auto; text-align: left;
+                margin-bottom: 12px; display: inline-block; background: var(--accent-color);
+                padding: 4px 12px; border-radius: 20px; color: var(--secondary-color);
             }
-            .timeline-date span {
-                display: inline;
-                margin-left: 6px;
-                color: var(--secondary-color);
-                opacity: 0.8;
-            }
-            .timeline-dot {
-                left: 13px;
-                top: 40px;
-            }
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
+            .timeline-date span { display: inline; margin-left: 6px; }
+            .timeline-dot { left: 13px; top: 40px; }
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Print CSS for Dynamic PDF Generation */
+        @media print {
+            body { background: #fff; font-size: 11pt; color: #000; }
+            .container { margin: 0; box-shadow: none; border-radius: 0; max-width: 100%; }
+            header { padding: 30px; background: #f8fafc; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
+            header h1 { color: var(--primary-color); }
+            .contact-info { color: #333; }
+            .btn-download { display: none; } /* Hides the button on the PDF */
+            .content { padding: 30px; }
+            .reveal { opacity: 1; transform: none; } /* Show all animations instantly */
+            .timeline-progress { height: 100% !important; }
+            .job-card, .skill-card { page-break-inside: avoid; border: 1px solid #e2e8f0; box-shadow: none; margin-bottom: 15px; padding: 20px;}
+            .timeline-item { page-break-inside: avoid; margin-bottom: 20px; }
+            h2 { page-break-after: avoid; }
         }
     </style>
 </head>
@@ -442,8 +441,7 @@
     <header>
         <div class="header-inner reveal">
             <div class="profile-pic-container">
-                <!-- Replace the src attribute below with the RAW GitHub link to your picture -->
-                <img src="https://github.com/tom-bonte/tom-bonte.github.io/blob/main/504145975_10161081228477181_7526414576954565550_n.png?raw=true" alt="Tom Bonte" class="profile-pic">
+                <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/504145975_10161081228477181_7526414576954565550_n.png" alt="Tom Bonte" class="profile-pic">
             </div>
             <div class="header-text">
                 <h1>Tom Bonte</h1>
@@ -454,11 +452,20 @@
                     <span>✉️ tombonte89@gmail.com</span>
                     <span>📱 +34 604 493 762</span>
                 </div>
+                <button class="btn-download" onclick="window.print()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Save as PDF
+                </button>
             </div>
         </div>
     </header>
 
     <div class="content">
+
+        <section>
+            <h2 class="reveal">💼 Professional Summary</h2>
+            <p class="summary-text reveal">Multilingual Operations and Customer Success professional with an academic background in Engineering and over a decade of experience managing international logistics, high-stakes scheduling, and diverse teams. Proven ability to handle dynamic B2B relationships, crisis de-escalation, and premium customer service across Europe and Latin America. Seeking to transition deep operational expertise and six-language fluency into the tech, SaaS, or logistics sectors.</p>
+        </section>
 
         <section>
             <h2 class="reveal">🌐 Professional Languages</h2>
@@ -545,9 +552,6 @@
                             <li>Drove digital marketing efforts, handling social media management and media editing.</li>
                             <li>Mentored and developed staff, guiding candidates through leadership internships and shaping professional industry standards.</li>
                         </ul>
-                        <div class="cred-box">
-                            <strong>🏆 Integrated Credentials:</strong> Achieved <em>PADI Master Instructor (#345946)</em> and <em>SSI Assistant Instructor Trainer</em>. Taught 500+ official certifications and logged over 2000+ dives during this tenure. Held 15+ specialized instructional ratings.
-                        </div>
                     </div>
                 </div>
 
@@ -672,6 +676,15 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Progress bar animation for languages
         const progressBars = document.querySelectorAll('.progress-fill');
+        
+        // Custom animation function to run when printing or revealing
+        const fillBars = () => {
+            progressBars.forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                bar.style.width = width;
+            });
+        };
+
         const progressObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -700,6 +713,12 @@
         revealElements.forEach(el => {
             revealObserver.observe(el);
         });
+
+        // Ensure everything is fully visible before printing
+        window.onbeforeprint = function() {
+            fillBars();
+            revealElements.forEach(el => el.classList.add('active'));
+        };
 
         // Interactive Timeline Scroll Progress
         const timeline = document.querySelector('.timeline');
