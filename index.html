@@ -303,7 +303,7 @@
            DYNAMIC PRINT CSS - PROFESSIONAL RESUME 
            ---------------------------------- */
         @media print {
-            @page { margin: 1.5cm; }
+            @page { margin: 1cm; }
             
             /* CRITICAL FIX: WebKit backdrop-filter breaks print pagination. Nuke all filters and transforms. */
             *, *::before, *::after {
@@ -316,22 +316,17 @@
                 animation: none !important;
             }
             
-            /* Allow body to extend across multiple printed pages */
+            /* Allow body to extend across multiple printed pages and dial down fonts to fit 2 pages */
             html, body { 
                 background: #fff !important; 
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important; 
-                font-size: 10.5pt !important; 
+                font-size: 9.5pt !important; 
                 color: #000 !important; 
                 overflow: visible !important; 
                 height: auto !important; 
                 min-height: auto !important;
                 display: block !important;
                 position: static !important;
-            }
-            
-            /* Hide Parallax, Backgrounds, Web-Only Elements, and the Map section */
-            #global-bg, #global-bg-overlay, #pic-modal, .map-ui, #map-wrapper, .print-hide, .button-group, .emoji, .timeline-line, .timeline-progress, .timeline-dot, .progress-bg { 
-                display: none !important; 
             }
             
             /* Flatten layouts to ensure smooth page breaking */
@@ -341,19 +336,19 @@
                 width: 100% !important;
                 max-width: 100% !important;
                 padding: 0 !important; 
-                margin: 0 0 25px 0 !important; 
+                margin: 0 0 15px 0 !important; 
                 background: transparent !important;
                 border: none !important;
                 border-radius: 0 !important; 
             }
             
             /* Header Restructure for Print */
-            header { margin-bottom: 25px !important; border-bottom: 2px solid #000 !important; padding-bottom: 15px !important; }
+            header { margin-bottom: 15px !important; border-bottom: 2px solid #000 !important; padding-bottom: 10px !important; }
             .header-inner { 
                 display: flex !important; 
                 justify-content: space-between !important;
                 align-items: center !important; 
-                gap: 20px !important; 
+                gap: 15px !important; 
                 flex-direction: row !important; 
                 text-align: left !important; 
                 margin-bottom: 0 !important; 
@@ -361,54 +356,51 @@
                 border: none !important;
             }
             .header-text { order: 1 !important; flex: 1 !important; }
-            .profile-pic-container { display: block !important; order: 2 !important; flex-shrink: 0 !important; margin-left: 20px !important; }
-            .profile-pic { width: 90px !important; height: 90px !important; border: 1px solid #ddd !important; cursor: default !important;}
+            .profile-pic-container { display: block !important; order: 2 !important; flex-shrink: 0 !important; margin-left: 15px !important; }
+            .profile-pic { width: 75px !important; height: 75px !important; border: 1px solid #ddd !important; cursor: default !important;}
             
-            header h1 { color: #000 !important; font-size: 26pt !important; margin: 0 0 5px 0 !important; }
-            .contact-info { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 8px 15px !important; color: #333 !important; font-size: 10pt !important; margin-top: 5px !important;}
+            header h1 { color: #000 !important; font-size: 22pt !important; margin: 0 0 3px 0 !important; }
+            .contact-info { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 5px 12px !important; color: #333 !important; font-size: 9pt !important; margin-top: 3px !important;}
             .contact-info span { background: transparent !important; border: none !important; padding: 0 !important; color: #333 !important; display: inline-block !important; }
 
             /* Typography */
             h2 { 
-                color: #000 !important; font-size: 14pt !important; border-bottom: 1px solid #ccc !important; 
-                padding-bottom: 5px !important; margin-top: 0 !important; margin-bottom: 15px !important;
+                color: #000 !important; font-size: 13pt !important; border-bottom: 1px solid #ccc !important; 
+                padding-bottom: 3px !important; margin-top: 0 !important; margin-bottom: 10px !important;
             }
             h2::after { display: none !important; } 
             
-            .summary-text { font-size: 11pt !important; margin: 0 0 15px 0 !important; line-height: 1.5 !important; color: #000 !important; text-align: left !important; }
+            .summary-text { font-size: 9.5pt !important; margin: 0 0 10px 0 !important; line-height: 1.4 !important; color: #000 !important; text-align: justify !important; }
 
             /* Languages Grid */
             .language-grid { 
                 display: grid !important; 
                 grid-template-columns: 1fr 1fr 1fr !important; 
-                gap: 15px !important; 
-                margin-bottom: 20px !important; 
+                gap: 5px 15px !important; 
+                margin-bottom: 10px !important; 
             }
             .lang-item { 
                 width: auto !important; padding: 0 !important; border: none !important; margin: 0 !important; background: transparent !important; 
             }
-            .lang-header { margin: 0 !important; font-size: 10.5pt !important; color: #000 !important; font-weight: normal !important; display: flex !important; justify-content: space-between !important; width: 100% !important;}
+            .lang-header { margin: 0 !important; font-size: 9.5pt !important; color: #000 !important; font-weight: normal !important; display: flex !important; justify-content: space-between !important; width: 100% !important;}
             .lang-identity { font-weight: bold !important; }
 
-            /* Experience / Timeline */
+            /* Experience / Timeline - Redesigned to 1-liner */
             .timeline { margin-top: 0 !important; display: block !important; }
-            .timeline-item { padding-left: 0 !important; margin-bottom: 20px !important; page-break-inside: avoid !important; display: block !important; }
+            .timeline-item { padding-left: 0 !important; margin-bottom: 15px !important; page-break-inside: avoid !important; display: block !important; }
             .timeline-date { display: none !important; } 
             
-            .job-card, .skill-card { border: none !important; padding: 0 !important; margin-bottom: 20px !important; background: transparent !important; page-break-inside: avoid !important; display: block !important; }
+            .job-card { border: none !important; padding: 0 !important; margin-bottom: 12px !important; background: transparent !important; page-break-inside: avoid !important; display: block !important; }
             
-            .job-header-top { display: flex !important; justify-content: space-between !important; align-items: baseline !important; margin-bottom: 4px !important; }
-            .job-title { font-size: 12.5pt !important; color: #000 !important; margin: 0 !important; font-weight: bold !important;}
-            .job-duration { background: transparent !important; color: #333 !important; padding: 0 !important; font-size: 11pt !important; font-weight: bold !important; border: none !important; }
+            .job-header-top { display: inline !important; margin: 0 !important; }
+            .job-title { display: inline !important; font-size: 10.5pt !important; color: #000 !important; margin: 0 !important; font-weight: bold !important;}
+            .job-company { display: inline !important; font-weight: 600 !important; font-style: italic !important; color: #444 !important; font-size: 9.5pt !important; margin-left: 6px !important;}
+            .job-company::before { content: "| "; font-weight: normal; font-style: normal; color: #888; }
+            .job-duration { float: right !important; background: transparent !important; color: #333 !important; padding: 0 !important; font-size: 9.5pt !important; font-weight: normal !important; border: none !important; }
             
-            .job-company { display: block !important; font-weight: 600 !important; font-style: italic !important; color: #444 !important; font-size: 11pt !important; margin-bottom: 8px !important; }
-            
-            .job-card p, .job-card ul, .skill-card p { margin: 0 0 8px 0 !important; line-height: 1.5 !important; color: #111 !important; font-size: 11pt !important;}
-            .job-card ul { padding-left: 18px !important; }
-
-            .skills-grid { display: block !important; }
-            .skill-card { margin-bottom: 15px !important; page-break-inside: avoid !important; }
-            .skill-card h3 { font-size: 12pt !important; color: #000 !important; margin-bottom: 5px !important; font-weight: bold !important; }
+            .job-card p, .job-card ul { margin: 4px 0 0 0 !important; line-height: 1.35 !important; color: #111 !important; font-size: 9.5pt !important;}
+            .job-card ul { padding-left: 18px !important; margin-top: 4px !important; }
+            .job-card li { margin-bottom: 3px !important; }
 
             h2 { page-break-after: avoid !important; }
             
@@ -416,6 +408,11 @@
             .reveal-up, .reveal-left, .reveal-right, .active { 
                 opacity: 1 !important; 
                 visibility: visible !important;
+            }
+
+            /* Hide Parallax, Backgrounds, Web-Only Elements, and specific sections */
+            #global-bg, #global-bg-overlay, #pic-modal, .map-ui, #map-wrapper, .button-group, .emoji, .timeline-line, .timeline-progress, .timeline-dot, .progress-bg, .print-hide { 
+                display: none !important; 
             }
         }
     </style>
@@ -702,8 +699,8 @@
     </div>
 </section>
 
-<!-- Box 7: Skills -->
-<section class="content-section">
+<!-- Box 7: Skills (Hidden in Print) -->
+<section class="content-section print-hide">
     <div class="glass-panel">
         <h2 class="reveal-left">Additional Expertise</h2>
         <div class="skills-grid">
