@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tom Bonte | Operations & Management Professional</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet JS Map Engine -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <style>
         :root {
             --primary-color: #0f172a; /* Deep Slate */
@@ -214,6 +221,129 @@
             transition: width 1.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
+        /* Professional Map Styles */
+        .trip-section {
+            margin-bottom: 50px;
+        }
+
+        .trip-container-box {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Leaflet Map Container */
+        #map {
+            width: 100%;
+            height: 400px;
+            background: #eef2f5; 
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1; /* Keep it below buttons */
+        }
+
+        /* Custom Leaflet Dot Marker */
+        .custom-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--secondary-color);
+            border: 2px solid white;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        /* Active pulsing dot */
+        .custom-dot.active {
+            opacity: 1;
+            animation: pulse-ring 1.5s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        /* Clean UI Text Box */
+        .map-ui {
+            padding: 30px 40px;
+            background: var(--card-bg);
+            position: relative;
+            z-index: 2;
+        }
+
+        .map-ui-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .map-step-title {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.4em;
+            font-weight: 800;
+        }
+
+        .map-step-meta {
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .map-step-desc {
+            margin: 0 0 25px 0;
+            color: var(--text-main);
+            font-size: 1.05em;
+            line-height: 1.6;
+            min-height: 50px;
+        }
+
+        /* Strict Next/Back Controls */
+        .map-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .map-progress {
+            font-size: 0.9em;
+            font-weight: 700;
+            color: var(--text-light);
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-nav {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95em;
+            border: none;
+            width: 140px;
+            text-align: center;
+        }
+
+        .btn-prev { background: #f1f5f9; color: var(--text-main); }
+        .btn-prev:hover { background: #e2e8f0; }
+        .btn-prev:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-next { background: var(--primary-color); color: white; }
+        .btn-next:hover { background: var(--secondary-color); }
+        .btn-next:disabled { opacity: 0.5; cursor: not-allowed; }
+
         /* Interactive Timeline styles */
         .timeline {
             position: relative;
@@ -412,6 +542,10 @@
             .contact-info { justify-content: center; }
             .button-group { justify-content: center; }
             .content { padding: 30px 20px; }
+            #map { height: 300px; }
+            .map-ui { padding: 20px; }
+            .map-ui-header { flex-direction: column; align-items: flex-start; gap: 5px; }
+            .btn-nav { padding: 10px 15px; font-size: 0.85em; width: 100px;}
             .timeline-line, .timeline-progress { left: 20px; }
             .timeline-item { padding-left: 45px; }
             .timeline-date {
@@ -435,7 +569,6 @@
             header h1 { color: #000; font-size: 24pt; margin: 0 0 5px 0; }
             .contact-info { color: #333; display: block; font-size: 9.5pt; margin-top: 5px;}
             .contact-info span { display: inline-block; margin-right: 15px; margin-bottom: 3px;}
-            .personal-tags { color: #555; margin-top: 5px; font-style: italic; }
 
             .content { padding: 15px 0 0 0; }
             h2 { color: #000; font-size: 13pt; border-bottom: 1px solid #000; padding-bottom: 3px; margin-top: 15px; margin-bottom: 10px; }
@@ -447,6 +580,9 @@
             .progress-bg { display: none; } 
             .lang-header { margin: 0; font-size: 10pt; color: #000; }
             .lang-flag { display: none; } 
+
+            /* Hide the interactive map completely on print */
+            .trip-section { display: none !important; }
 
             .timeline { margin-top: 10px; }
             .timeline-line, .timeline-progress, .timeline-dot { display: none; } 
@@ -558,6 +694,27 @@
                         <span>60%</span>
                     </div>
                     <div class="progress-bg"><div class="progress-fill" data-width="60%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="trip-section reveal">
+            <h2>🌍 The Operational Journey</h2>
+            <div class="trip-container-box">
+                <div id="map"></div>
+                
+                <div class="map-ui">
+                    <div class="map-ui-header">
+                        <h3 class="map-step-title" id="tripTitle">Loading...</h3>
+                        <span class="map-step-meta" id="tripDate"></span>
+                    </div>
+                    <p class="map-step-desc" id="tripDesc"></p>
+                    
+                    <div class="map-controls">
+                        <button class="btn-nav btn-prev" id="tripPrev">← Back</button>
+                        <span class="map-progress" id="tripProgress">1 / 8</span>
+                        <button class="btn-nav btn-next" id="tripNext">Next Stop →</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -787,6 +944,112 @@
             window.addEventListener('scroll', handleScroll);
             window.addEventListener('resize', handleScroll);
             handleScroll(); // Initial check
+        }
+
+        // ------------------------------------
+        // LEAFLET MAP ENGINE
+        // ------------------------------------
+        if (document.getElementById('map')) {
+            const stops = [
+                { title: "Early Life & Education", date: "1989 – 2007", lat: 50.8864, lng: 3.4324, zoom: 6, 
+                  desc: "Born in Waregem, Belgium. Consistently ranked top of the class through primary school and graduated as Laureate in Sciences-Mathematics at HHC. The analytical foundation is permanently set." },
+                
+                { title: "KU Leuven", date: "2007 – 2013", lat: 50.8798, lng: 4.7005, zoom: 6, 
+                  desc: "Studied Civil and Industrial Engineering. Mastered complex systems and logic, but realized my true passion required a dynamic, global environment." },
+                
+                { title: "Playa del Carmen, Mexico", date: "Oct 2013 – Jun 2014 (9 Mos)", lat: 20.6296, lng: -87.0739, zoom: 4, 
+                  desc: "Professional Internship. Discovered a natural talent for B2C sales and applied multiple languages to rapidly become the top-selling intern on the resort." },
+                
+                { title: "Hurghada, Egypt", date: "Sep 2014 – Spring 2016 (1 Yr, 8 Mos)", lat: 27.2579, lng: 33.8116, zoom: 4, 
+                  desc: "Promoted to IDC Staff Instructor. Managed daily marine logistics for 30+ guests, executing high-stress scheduling across 60+ locations." },
+
+                { title: "Belgium (Intermezzo)", date: "2016 – 2018 (2 Yrs)", lat: 50.8864, lng: 3.4324, zoom: 5, 
+                  desc: "Returned to Belgium. Managed B2C sales/administration for Veranda's Willems and taught freelance cold-water diving, refining my business operations and instructional versatility." },
+                
+                { title: "Playas del Coco, Costa Rica", date: "Aug 2018 – Oct 2024 (6 Yrs, 2 Mos)", lat: 10.5530, lng: -85.6966, zoom: 4, 
+                  desc: "General Manager at a 5* CDC. Directed B2B operations, staff development, and complex dispatch logistics. Earned Master Instructor rating." },
+                
+                { title: "Cabo de Palos, Spain", date: "Oct 2024 – Present (1 Yr, 5 Mos)", lat: 37.6333, lng: -0.6983, zoom: 5, 
+                  desc: "Operations Manager at Mangamar. Currently directing high-volume marine logistics, complex scheduling, and international client relations." },
+                
+                { title: "The Next Pivot", date: "2026 & Beyond", lat: 40.4168, lng: -3.7038, zoom: 3, 
+                  desc: "After 13 years scaling operations globally, I am ready for the next challenge. Bringing an engineering brain, crisis management, and linguistic fluency to the corporate sector." }
+            ];
+
+            let currentStop = 0;
+            let markerElements = [];
+
+            const titleEl = document.getElementById('tripTitle');
+            const dateEl = document.getElementById('tripDate');
+            const descEl = document.getElementById('tripDesc');
+            const progressEl = document.getElementById('tripProgress');
+            const btnNext = document.getElementById('tripNext');
+            const btnPrev = document.getElementById('tripPrev');
+
+            const dotHtml = "<div class='custom-dot'></div>";
+            const activeDotHtml = "<div class='custom-dot active'></div>";
+            
+            const standardIcon = L.divIcon({ className: '', html: dotHtml, iconSize: [14, 14], iconAnchor: [7, 7] });
+            const activeIcon = L.divIcon({ className: '', html: activeDotHtml, iconSize: [14, 14], iconAnchor: [7, 7] });
+
+            let map = L.map('map', {
+                zoomControl: false, 
+                scrollWheelZoom: false,
+                dragging: false,
+                doubleClickZoom: false
+            }).setView([stops[0].lat, stops[0].lng], stops[0].zoom);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+
+            stops.forEach((stop) => {
+                const marker = L.marker([stop.lat, stop.lng], { icon: standardIcon, opacity: 0 }).addTo(map);
+                markerElements.push(marker);
+            });
+
+            function updateMapUI(index) {
+                titleEl.textContent = stops[index].title;
+                dateEl.textContent = stops[index].date;
+                descEl.textContent = stops[index].desc;
+                progressEl.textContent = `${index + 1} / ${stops.length}`;
+                
+                btnPrev.disabled = index === 0;
+                btnNext.disabled = index === stops.length - 1;
+            }
+
+            function flyToStop(index) {
+                if (index < 0 || index >= stops.length) return;
+                
+                currentStop = index;
+                updateMapUI(currentStop);
+
+                markerElements.forEach((marker, i) => {
+                    if (i === currentStop) {
+                        marker.setOpacity(1);
+                        marker.setIcon(activeIcon);
+                    } else if (i < currentStop) {
+                        marker.setOpacity(0.5);
+                        marker.setIcon(standardIcon);
+                    } else {
+                        marker.setOpacity(0);
+                    }
+                });
+
+                map.flyTo([stops[currentStop].lat, stops[currentStop].lng], stops[currentStop].zoom, {
+                    duration: 1.2,
+                    easeLinearity: 0.25
+                });
+            }
+
+            updateMapUI(0);
+            markerElements[0].setOpacity(1);
+            markerElements[0].setIcon(activeIcon);
+
+            btnNext.addEventListener('click', () => flyToStop(currentStop + 1));
+            btnPrev.addEventListener('click', () => flyToStop(currentStop - 1));
         }
     });
 </script>
