@@ -305,41 +305,46 @@
         @media print {
             @page { margin: 1.5cm; }
             
-            /* CRITICAL FIX: Resetting overflow and height allows the browser to print multiple pages */
+            /* CRITICAL FIX: WebKit backdrop-filter breaks print pagination. Nuke all filters and transforms. */
+            *, *::before, *::after {
+                -webkit-backdrop-filter: none !important;
+                backdrop-filter: none !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+                transform: none !important;
+                transition: none !important;
+                animation: none !important;
+            }
+            
+            /* Allow body to extend across multiple printed pages */
             html, body { 
                 background: #fff !important; 
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important; 
-                font-size: 11pt !important; 
+                font-size: 10.5pt !important; 
                 color: #000 !important; 
                 overflow: visible !important; 
                 height: auto !important; 
                 min-height: auto !important;
+                display: block !important;
+                position: static !important;
             }
             
-            /* Destroy Parallax, Backgrounds, Maps & Web-Only Elements */
-            #global-bg, #global-bg-overlay, #pic-modal, .map-ui, #map-wrapper, .trip-section, .button-group, .emoji, .timeline-line, .timeline-progress, .timeline-dot, .progress-bg { 
+            /* Hide Parallax, Backgrounds, Web-Only Elements, and the Map section */
+            #global-bg, #global-bg-overlay, #pic-modal, .map-ui, #map-wrapper, .print-hide, .button-group, .emoji, .timeline-line, .timeline-progress, .timeline-dot, .progress-bg { 
                 display: none !important; 
             }
             
-            /* Restructure Sections */
-            .content-section { 
+            /* Flatten layouts to ensure smooth page breaking */
+            .content-section, .glass-panel, .edu-container { 
                 display: block !important; 
-                padding: 0 !important; 
-                margin-bottom: 20px !important; 
-                min-height: auto !important; 
                 position: static !important;
-            }
-            
-            .glass-panel { 
-                display: block !important;
-                background: transparent !important; 
-                backdrop-filter: none !important; 
-                border: none !important; 
-                box-shadow: none !important; 
+                width: 100% !important;
+                max-width: 100% !important;
                 padding: 0 !important; 
-                max-width: 100% !important; 
+                margin: 0 0 25px 0 !important; 
+                background: transparent !important;
+                border: none !important;
                 border-radius: 0 !important; 
-                position: static !important;
             }
             
             /* Header Restructure for Print */
@@ -356,59 +361,62 @@
                 border: none !important;
             }
             .header-text { order: 1 !important; flex: 1 !important; }
-            .profile-pic-container { display: block !important; order: 2 !important; flex-shrink: 0 !important; perspective: none !important; margin-left: 20px !important; }
-            .profile-pic { width: 90px !important; height: 90px !important; border: 1px solid #ddd !important; box-shadow: none !important; transform: none !important; cursor: default !important;}
-            .header-inner:hover .profile-pic { transform: none !important; border-color: #ddd !important; }
+            .profile-pic-container { display: block !important; order: 2 !important; flex-shrink: 0 !important; margin-left: 20px !important; }
+            .profile-pic { width: 90px !important; height: 90px !important; border: 1px solid #ddd !important; cursor: default !important;}
             
-            header h1 { color: #000 !important; font-size: 26pt !important; margin: 0 0 5px 0 !important; text-shadow: none !important; }
+            header h1 { color: #000 !important; font-size: 26pt !important; margin: 0 0 5px 0 !important; }
             .contact-info { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 8px 15px !important; color: #333 !important; font-size: 10pt !important; margin-top: 5px !important;}
-            .contact-info span { background: transparent !important; border: none !important; padding: 0 !important; color: #333 !important; box-shadow: none !important; display: inline-block !important; }
+            .contact-info span { background: transparent !important; border: none !important; padding: 0 !important; color: #333 !important; display: inline-block !important; }
 
             /* Typography */
             h2 { 
                 color: #000 !important; font-size: 14pt !important; border-bottom: 1px solid #ccc !important; 
-                padding-bottom: 5px !important; margin-top: 0 !important; margin-bottom: 15px !important; text-shadow: none !important;
+                padding-bottom: 5px !important; margin-top: 0 !important; margin-bottom: 15px !important;
             }
             h2::after { display: none !important; } 
             
-            .summary-text { font-size: 11pt !important; margin: 0 0 15px 0 !important; line-height: 1.5 !important; color: #000 !important; text-align: left !important; text-shadow: none !important; }
+            .summary-text { font-size: 11pt !important; margin: 0 0 15px 0 !important; line-height: 1.5 !important; color: #000 !important; text-align: left !important; }
 
             /* Languages Grid */
             .language-grid { 
                 display: grid !important; 
                 grid-template-columns: 1fr 1fr 1fr !important; 
-                gap: 10px !important; 
+                gap: 15px !important; 
                 margin-bottom: 20px !important; 
             }
             .lang-item { 
-                width: auto !important; padding: 5px 0 !important; border: none !important; box-shadow: none !important; margin: 0 !important; background: transparent !important; transform: none !important; 
+                width: auto !important; padding: 0 !important; border: none !important; margin: 0 !important; background: transparent !important; 
             }
-            .lang-header { margin: 0 !important; font-size: 11pt !important; color: #000 !important; font-weight: normal !important; display: flex !important; justify-content: space-between !important; width: 90% !important;}
+            .lang-header { margin: 0 !important; font-size: 10.5pt !important; color: #000 !important; font-weight: normal !important; display: flex !important; justify-content: space-between !important; width: 100% !important;}
             .lang-identity { font-weight: bold !important; }
 
             /* Experience / Timeline */
-            .timeline { margin-top: 0 !important; }
-            .timeline-item { padding-left: 0 !important; margin-bottom: 20px !important; page-break-inside: avoid !important; }
+            .timeline { margin-top: 0 !important; display: block !important; }
+            .timeline-item { padding-left: 0 !important; margin-bottom: 20px !important; page-break-inside: avoid !important; display: block !important; }
             .timeline-date { display: none !important; } 
             
-            .job-card, .skill-card { border: none !important; padding: 0 !important; box-shadow: none !important; margin-bottom: 20px !important; background: transparent !important; transform: none !important; page-break-inside: avoid !important; }
-            .job-card:hover, .skill-card:hover { transform: none !important; box-shadow: none !important; background: transparent !important;}
+            .job-card, .skill-card { border: none !important; padding: 0 !important; margin-bottom: 20px !important; background: transparent !important; page-break-inside: avoid !important; display: block !important; }
             
-            .job-header-top { display: flex !important; justify-content: space-between !important; align-items: baseline !important; margin-bottom: 4px !important; transform: none !important; }
-            .job-title { font-size: 12.5pt !important; color: #000 !important; margin: 0 !important; text-shadow: none !important; font-weight: bold !important;}
+            .job-header-top { display: flex !important; justify-content: space-between !important; align-items: baseline !important; margin-bottom: 4px !important; }
+            .job-title { font-size: 12.5pt !important; color: #000 !important; margin: 0 !important; font-weight: bold !important;}
             .job-duration { background: transparent !important; color: #333 !important; padding: 0 !important; font-size: 11pt !important; font-weight: bold !important; border: none !important; }
             
-            .job-company { display: block !important; font-weight: 600 !important; font-style: italic !important; color: #444 !important; font-size: 11pt !important; margin-bottom: 8px !important; transform: none !important;}
+            .job-company { display: block !important; font-weight: 600 !important; font-style: italic !important; color: #444 !important; font-size: 11pt !important; margin-bottom: 8px !important; }
             
-            .job-card p, .job-card ul, .skill-card p { margin: 0 0 8px 0 !important; line-height: 1.5 !important; color: #111 !important; font-size: 11pt !important; transform: none !important; text-shadow: none !important;}
+            .job-card p, .job-card ul, .skill-card p { margin: 0 0 8px 0 !important; line-height: 1.5 !important; color: #111 !important; font-size: 11pt !important;}
             .job-card ul { padding-left: 18px !important; }
 
             .skills-grid { display: block !important; }
             .skill-card { margin-bottom: 15px !important; page-break-inside: avoid !important; }
-            .skill-card h3 { font-size: 12pt !important; color: #000 !important; margin-bottom: 5px !important; font-weight: bold !important; transform: none !important; text-shadow: none !important;}
+            .skill-card h3 { font-size: 12pt !important; color: #000 !important; margin-bottom: 5px !important; font-weight: bold !important; }
 
             h2 { page-break-after: avoid !important; }
-            .reveal-up, .reveal-left, .reveal-right { opacity: 1 !important; transform: none !important; transition: none !important; }
+            
+            /* Enforce visibility on all print content */
+            .reveal-up, .reveal-left, .reveal-right, .active { 
+                opacity: 1 !important; 
+                visibility: visible !important;
+            }
         }
     </style>
 </head>
@@ -432,7 +440,7 @@
         <header>
             <div class="header-inner reveal-up">
                 <div class="profile-pic-container">
-                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/504145975_10161081228477181_7526414576954565550_n.png" alt="Tom Bonte" class="profile-pic">
+                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/504145975_10161081228477181_7526414576954565550_n.png" alt="Tom Bonte" class="profile-pic" title="Click to enlarge">
                 </div>
                 <div class="header-text">
                     <h1>Tom Bonte</h1>
@@ -513,8 +521,8 @@
     </div>
 </section>
 
-<!-- Box 4: Map / Journey -->
-<section class="content-section">
+<!-- Box 4: Map / Journey (Hidden completely in Print) -->
+<section class="content-section print-hide">
     <div class="glass-panel">
         <h2 class="reveal-left">The Operational Journey</h2>
         <div class="trip-container-box reveal-up">
