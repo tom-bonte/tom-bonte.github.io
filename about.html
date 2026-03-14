@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tom Bonte | Get To Know Me</title>
+    <title>Tom Bonte | The Journey</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -28,15 +28,15 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 50px auto;
             background: var(--card-bg);
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
             overflow: hidden;
         }
 
-        /* Redesigned Modern Header */
+        /* Modern Header */
         header {
             background: radial-gradient(circle at top right, #1e293b, var(--primary-color));
             color: white;
@@ -47,24 +47,38 @@
 
         .header-top {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
         }
 
-        .btn-back {
+        .btn-header {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             color: #94a3b8;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 16px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 500;
             font-size: 0.95em;
-            transition: color 0.3s ease, transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
-        .btn-back:hover {
+        .btn-header:hover {
             color: #ffffff;
-            transform: translateX(-4px);
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .btn-bailout {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-bailout:hover {
+            background: #1d4ed8;
         }
 
         .header-content {
@@ -84,23 +98,21 @@
         header p {
             color: #94a3b8;
             font-size: 1.15em;
-            font-weight: 400;
-            max-width: 600px;
             margin: 0 auto;
-            line-height: 1.5;
+            max-width: 600px;
         }
 
         .content {
             padding: 50px;
         }
 
-        /* 3D Cover Flow Carousel Styles (No Dots) */
+        /* 3D Cover Flow Carousel (Manual Only) */
         .carousel-container {
             position: relative;
             width: 100%;
             height: 450px;
             border-radius: 12px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             background: #e2e8f0;
             display: flex;
             align-items: center;
@@ -188,79 +200,195 @@
         .prev-btn { left: 20px; }
         .next-btn { right: 20px; }
 
-        /* Typography & Layout */
-        h2 {
+        /* Digital Trip Map Styles */
+        .map-section {
+            margin-bottom: 50px;
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .map-header h2 {
+            margin: 0;
             color: var(--primary-color);
-            font-size: 1.6em;
-            margin-top: 40px;
-            margin-bottom: 15px;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .map-widget {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: #e2e8f0; /* Ocean color */
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .map-viewport {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-origin: center center;
+            transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
+            background-size: 100% auto;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+        }
+
+        .map-dot {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--secondary-color);
+            border: 3px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .map-dot.visible {
+            opacity: 1;
+        }
+        
+        .map-dot.pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        /* Map UI Overlay */
+        .map-ui {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .map-ui-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .map-step-title {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.3em;
+            font-weight: 800;
+        }
+
+        .map-step-meta {
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .map-step-desc {
+            margin: 0 0 20px 0;
+            color: var(--text-main);
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .map-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .map-progress {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-light);
+            letter-spacing: 1px;
+        }
+
+        .map-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
         }
 
-        .bio-section {
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
+        .map-btn:hover { background: var(--secondary-color); }
+        .map-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-        .bio-section p {
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.05em;
-            color: var(--text-main);
-            text-align: justify;
-        }
-
-        .bio-section p:last-child {
-            margin-bottom: 0;
-        }
-
-        .interests-grid {
+        /* The Vault (Leftovers) Section */
+        .vault-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
 
-        .interest-card {
+        .vault-card {
             background: var(--bg-color);
-            padding: 20px;
+            padding: 25px;
             border-radius: 12px;
-            text-align: center;
             border: 1px solid var(--border-color);
-            transition: transform 0.3s ease;
         }
 
-        .interest-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--secondary-color);
-        }
-
-        .interest-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .interest-title {
-            font-weight: 600;
+        .vault-card h3 {
+            margin: 0 0 10px 0;
             color: var(--primary-color);
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vault-card p {
             margin: 0;
+            color: var(--text-light);
+            font-size: 0.95em;
         }
 
         @media (max-width: 768px) {
-            .container { margin: 20px; }
+            .container { margin: 10px; }
             header { padding: 30px 20px; }
-            header h1 { font-size: 2.5em; }
-            .header-top { justify-content: center; margin-bottom: 20px; }
-            .btn-back:hover { transform: none; }
+            .header-top { flex-direction: column-reverse; gap: 15px; }
+            header h1 { font-size: 2.2em; }
             .content { padding: 25px; }
             .carousel-container { height: 300px; }
-            .carousel-slide { width: 70%; }
+            .carousel-slide { width: 75%; }
+            .map-widget { height: 450px; }
+            .map-ui { padding: 20px; width: 85%; bottom: 10px; }
+            .map-header { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
     </style>
 </head>
@@ -269,14 +397,18 @@
 <div class="container">
     <header>
         <div class="header-top">
-            <a href="index.html" class="btn-back">
+            <a href="index.html" class="btn-header">
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Back to Resume
+                Back 
+            </a>
+            <a href="index.html" class="btn-header btn-bailout">
+                Skip to Full Resume
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </a>
         </div>
         <div class="header-content">
             <h1>Beyond the Resume</h1>
-            <p>A look into my journey, passions, and life outside of work.</p>
+            <p>A global journey of operations, leadership, and continuous learning.</p>
         </div>
     </header>
 
@@ -289,16 +421,16 @@
             
             <div class="carousel-track">
                 <div class="carousel-slide active">
-                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/453413727_10159930842777181_659652526357510089_n.jpg" alt="Slide 1">
+                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/453413727_10159930842777181_659652526357510089_n.jpg" alt="Tom Bonte">
                 </div>
                 <div class="carousel-slide next">
-                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/504145975_10161081228477181_7526414576954565550_n%20(1)%202.png" alt="Slide 2">
+                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/504145975_10161081228477181_7526414576954565550_n%20(1)%202.png" alt="Professional Shot">
                 </div>
                 <div class="carousel-slide">
-                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/649236171_18353789872224540_7606525205848143333_n%20(1).jpg" alt="Slide 3">
+                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/649236171_18353789872224540_7606525205848143333_n%20(1).jpg" alt="Diving Operations">
                 </div>
                 <div class="carousel-slide prev">
-                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/74957494_10156528649622181_7368201062701858816_n.jpg" alt="Slide 4">
+                    <img src="https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/main/74957494_10156528649622181_7368201062701858816_n.jpg" alt="Global Leadership">
                 </div>
             </div>
 
@@ -307,40 +439,54 @@
             </button>
         </div>
 
-        <section class="bio-section">
-            <h2>🌍 The Journey So Far</h2>
-            <p>Growing up in Belgium, about an hour from the coast, I developed an early fascination with the brute force of the ocean and spent family trips exploring tide pools. That curiosity was nurtured by the digital encyclopedias on my family's old Windows 98 PC. While I initially followed an academic path into Civil and Industrial Engineering, a coincidental introduction dive during a trip to Turkey changed my trajectory entirely. I was hooked.</p>
-            <p>My global journey officially began in 2012 with a marine conservation program in Cambodia. It was my first real culture shock and taste of profound freedom. In 2013, I headed to Playa del Carmen, Mexico, for an intensive internship. That's where I truly became a professional, guiding dives and discovering a hidden talent: languages. Leveraging my Belgian background, I quickly became the go-to translator for guests. Hearing Brazilian Portuguese on the resort beach inspired me so much that upon returning home, I launched a 100-day mission to teach myself the language, adding a sixth language to my skill set.</p>
-            <p>Ready for the next challenge, I moved to Hurghada, Egypt. Between 2015 and 2016, I matured from a rookie into an IDC Staff Instructor with over 1,200 dives, learning that true leadership means adapting your approach to the person in front of you. After a stint back in Belgium navigating the rigors of cold-water drysuit diving and managing independent operations, the tropics called me back. I moved to Costa Rica in 2018, where I managed Rich Coast Diving under two Course Directors, ultimately achieving my Master Instructor rating and surpassing 2,500 dives. Today, I bring that same adaptability and operational focus to new challenges from my base in Spain.</p>
-        </section>
-
-        <section class="bio-section">
-            <h2>🏠 Life at Home & Wellness</h2>
-            <p>While my background is rooted in fast-paced international operations, life at home in Cabo de Palos is much more grounded. I share my daily routine with my Venezuelan wife, Desi, and our cat, Nori. Over the past year, I have taken major steps to prioritize my long-term health and well-being, and I am incredibly proud to have been completely smoke-free since October 2024.</p>
+        <section class="map-section">
+            <div class="map-header">
+                <h2>✈️ The Digital Trip</h2>
+            </div>
+            
+            <div class="map-widget">
+                <div class="map-viewport" id="mapViewport">
+                    </div>
+                
+                <div class="map-ui">
+                    <div class="map-ui-header">
+                        <div>
+                            <h3 class="map-step-title" id="tripTitle">Loading...</h3>
+                            <span class="map-step-meta" id="tripLocation"></span>
+                        </div>
+                        <span class="map-step-meta" id="tripDate" style="text-align: right;"></span>
+                    </div>
+                    <p class="map-step-desc" id="tripDesc"></p>
+                    
+                    <div class="map-controls">
+                        <button class="map-btn" id="tripPrev" disabled>Back</button>
+                        <span class="map-progress" id="tripProgress">1 / 9</span>
+                        <button class="map-btn" id="tripNext">Next Stop 
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section>
-            <h2>✨ Passions & Interests</h2>
-            <div class="interests-grid">
-                <div class="interest-card">
-                    <span class="interest-icon">🏃‍♂️</span>
-                    <p class="interest-title">Running</p>
-                    <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">Hitting the pavement to clear the mind and maintain physical discipline.</p>
+            <h2>🔐 The Vault: Behind the Scenes</h2>
+            <div class="vault-grid">
+                <div class="vault-card">
+                    <h3>👩‍❤️‍👨 My Co-Pilots</h3>
+                    <p>I am currently living in Spain, sharing my life and daily routines with my amazing Venezuelan wife, Desi, and our cat, Nori.</p>
                 </div>
-                <div class="interest-card">
-                    <span class="interest-icon">📚</span>
-                    <p class="interest-title">Reading & History</p>
-                    <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">Constantly exploring historical narratives and learning how the past shapes our modern world.</p>
+                <div class="vault-card">
+                    <h3>🫁 Health Milestone</h3>
+                    <p>I take my long-term health and discipline seriously. I am proud to have been completely smoke-free since October 2024.</p>
                 </div>
-                <div class="interest-card">
-                    <span class="interest-icon">🔭</span>
-                    <p class="interest-title">Astronomy</p>
-                    <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">A lifelong fascination with the cosmos, planetary history, and the vast mechanics of the universe.</p>
+                <div class="vault-card">
+                    <h3>🏃‍♂️ Active Downtime</h3>
+                    <p>When I'm not optimizing operations, I'm hitting the pavement for a run, exploring deep-sky astronomy, or capturing moments through photography.</p>
                 </div>
-                <div class="interest-card">
-                    <span class="interest-icon">📸</span>
-                    <p class="interest-title">Photography</p>
-                    <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">Capturing moments above and below the surface, mastering light and composition since 2006.</p>
+                <div class="vault-card">
+                    <h3>📚 Perpetual Student</h3>
+                    <p>I am a voracious reader with a deep passion for history, constantly seeking to understand how past narratives shape the modern world.</p>
                 </div>
             </div>
         </section>
@@ -349,52 +495,138 @@
 </div>
 
 <script>
-    // 3D Cover Flow Carousel Functionality (Manual Only)
+    // ------------------------------------
+    // 1. CAROUSEL LOGIC (Manual Only)
+    // ------------------------------------
     document.addEventListener("DOMContentLoaded", function() {
         const slides = Array.from(document.querySelectorAll('.carousel-slide'));
-        const nextButton = document.querySelector('.next-btn');
-        const prevButton = document.querySelector('.prev-btn');
-        
-        let currentIndex = 0;
+        const nextBtn = document.querySelector('.next-btn');
+        const prevBtn = document.querySelector('.prev-btn');
+        let currentSlide = 0;
 
         function updateCarousel(index) {
             slides.forEach((slide, i) => {
-                // Reset classes
-                slide.className = 'carousel-slide';
-                
-                // Add appropriate 3D placement class
-                if (i === index) {
-                    slide.classList.add('active');
-                } else if (i === (index - 1 + slides.length) % slides.length) {
-                    slide.classList.add('prev');
-                } else if (i === (index + 1) % slides.length) {
-                    slide.classList.add('next');
-                }
+                slide.className = 'carousel-slide'; // Reset
+                if (i === index) slide.classList.add('active');
+                else if (i === (index - 1 + slides.length) % slides.length) slide.classList.add('prev');
+                else if (i === (index + 1) % slides.length) slide.classList.add('next');
             });
         }
 
-        nextButton.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateCarousel(currentIndex);
+        nextBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateCarousel(currentSlide);
         });
 
-        prevButton.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            updateCarousel(currentIndex);
+        prevBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateCarousel(currentSlide);
         });
 
-        // Make side images clickable to bring them to the front
         slides.forEach((slide, index) => {
             slide.addEventListener('click', () => {
                 if (!slide.classList.contains('active')) {
-                    currentIndex = index;
-                    updateCarousel(currentIndex);
+                    currentSlide = index;
+                    updateCarousel(currentSlide);
                 }
             });
         });
+        updateCarousel(currentSlide);
 
-        // Initialize Carousel
-        updateCarousel(currentIndex);
+        // ------------------------------------
+        // 2. DIGITAL TRIP MAP ENGINE
+        // ------------------------------------
+        // Map Coordinates based on standard Mercator projection percentages
+        const stops = [
+            { title: "The Origin", loc: "Waregem, Belgium", date: "Feb 1989", x: 49, y: 28, zoom: 3.5, 
+              desc: "The journey begins. Born near the coast, developing an early fascination for the ocean's brute force. 🍼🕊️" },
+            
+            { title: "Early Discipline", loc: "Waregem, Belgium", date: "1995 - 2001", x: 49.2, y: 28.2, zoom: 3.5, 
+              desc: "Primary school years. Consistently finished top of the class every single year, establishing a lifelong habit of high performance." },
+            
+            { title: "The Laureate", loc: "HHC Waregem", date: "2001 - 2007", x: 49.2, y: 28.2, zoom: 3.5, 
+              desc: "Graduated as Laureate (top of 200+ students) in Sciences-Mathematics (8hrs math). The analytical foundation is set." },
+            
+            { title: "Engineering Mindset", loc: "KU Leuven, Belgium", date: "2007 - 2013", x: 49.5, y: 28.5, zoom: 3.5, 
+              desc: "Tackled Civil & Industrial Engineering. Mastered complex systems and logic, but realized my true passion lay in dynamic, global environments." },
+            
+            { title: "The Global Pivot", loc: "Playa del Carmen, Mexico", date: "Oct 2013", x: 23, y: 45, zoom: 2.5, 
+              desc: "Divemaster Internship. Discovered a natural talent for B2C sales and languages, rapidly becoming the top-selling intern on the resort." },
+            
+            { title: "Operational Leadership", loc: "Hurghada, Egypt", date: "Mar 2015", x: 56, y: 40, zoom: 2.5, 
+              desc: "Promoted to IDC Staff Instructor. Managed daily boat logistics for 30+ guests, 60+ reefs, and led cross-cultural teams in a high-stress hub." },
+            
+            { title: "Mastering the Business", loc: "Playas del Coco, Costa Rica", date: "Aug 2018", x: 24, y: 52, zoom: 2.5, 
+              desc: "General Manager at a 5* CDC. Ran daily B2B operations, staff training, and dispatch for 3 vessels. Earned my Master Instructor rating." },
+            
+            { title: "European Base", loc: "Cabo de Palos, Spain", date: "Oct 2024", x: 48, y: 35, zoom: 3.5, 
+              desc: "Operations Manager at Mangamar. Directing high-volume marine logistics, complex scheduling, and international client relations." },
+            
+            { title: "The Next Chapter", loc: "Tech & Operations", date: "The Future", x: 50, y: 30, zoom: 1.2, 
+              desc: "After 13 incredible years optimizing operations globally, I'm ready to pivot. Bringing a data-driven engineering brain, crisis management, and 6 languages to the corporate sector. 🚀" }
+        ];
+
+        let currentStop = 0;
+        const viewport = document.getElementById('mapViewport');
+        
+        // Inject Dots
+        stops.forEach((stop, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'map-dot';
+            dot.id = `dot-${index}`;
+            dot.style.left = `${stop.x}%`;
+            dot.style.top = `${stop.y}%`;
+            viewport.appendChild(dot);
+        });
+
+        // UI Elements
+        const titleEl = document.getElementById('tripTitle');
+        const locEl = document.getElementById('tripLocation');
+        const dateEl = document.getElementById('tripDate');
+        const descEl = document.getElementById('tripDesc');
+        const progressEl = document.getElementById('tripProgress');
+        const btnPrev = document.getElementById('tripPrev');
+        const btnNext = document.getElementById('tripNext');
+
+        function flyToStop(index) {
+            const stop = stops[index];
+            
+            // Calculate transform to center the active dot
+            // Transform origin is top-left by default, we shift it using translation
+            const translateX = 50 - stop.x;
+            const translateY = 50 - stop.y;
+            viewport.style.transform = `scale(${stop.zoom}) translate(${translateX}%, ${translateY}%)`;
+
+            // Update UI Text
+            titleEl.textContent = stop.title;
+            locEl.textContent = `📍 ${stop.loc}`;
+            dateEl.textContent = `🗓️ ${stop.date}`;
+            descEl.textContent = stop.desc;
+            progressEl.textContent = `${index + 1} / ${stops.length}`;
+
+            // Handle Dots visibility and pulse
+            document.querySelectorAll('.map-dot').forEach((dot, i) => {
+                dot.classList.remove('pulse');
+                if (i <= index) dot.classList.add('visible');
+                else dot.classList.remove('visible');
+            });
+            document.getElementById(`dot-${index}`).classList.add('pulse');
+
+            // Handle Buttons
+            btnPrev.disabled = index === 0;
+            if (index === stops.length - 1) {
+                btnNext.innerHTML = 'Finish <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                btnNext.onclick = () => { window.location.href = 'index.html'; };
+            } else {
+                btnNext.innerHTML = 'Next Stop <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>';
+                btnNext.onclick = () => { flyToStop(currentStop + 1); currentStop++; };
+            }
+        }
+
+        btnPrev.onclick = () => { flyToStop(currentStop - 1); currentStop--; };
+        
+        // Initialize Map
+        setTimeout(() => { flyToStop(0); }, 500); // Slight delay for smooth load
     });
 </script>
 
