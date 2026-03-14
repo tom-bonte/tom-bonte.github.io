@@ -1,1 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tom Bonte | Get To Know Me</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0f172a; 
+            --secondary-color: #2563eb; 
+            --accent-color: #e0e7ff; 
+            --text-main: #334155;
+            --text-light: #64748b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e293b 100%);
+            color: white;
+            padding: 40px 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.8em;
+            font-weight: 700;
+        }
+
+        header p {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        .btn-back {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .content {
+            padding: 50px;
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            background: #e2e8f0;
+        }
+
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 23, 42, 0.6);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+        }
+
+        /* Typography & Layout */
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.6em;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bio-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .bio-section p {
+            margin-top: 0;
+            font-size: 1.05em;
+            color: var(--text-main);
+        }
+
+        .bio-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .interest-card {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .interest-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+        }
+
+        .interest-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .interest-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container { margin: 20px; }
+            .btn-back { position: relative; top: 0; left: 0; margin-bottom: 20px; }
+            header { padding: 30px 20px; display: flex; flex-direction: column; align-items: center; }
+            .content { padding: 25px; }
+            .carousel-container { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <a href="index.html" class="btn-back">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to Resume
+        </a>
+        <h1>Beyond the Resume</h1>
+        <p>A look into my journey, passions, and life outside of work.</p>
+    </header>
+
+    <div class="content">
+
+        <div class="carousel-container">
+            <button class="carousel-btn prev-btn">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            
+            <div class="carousel-track">
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1682687220063-4742bd7fd538?q=80&w=1000&auto=format&fit=crop" alt="Slide 1">
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1682687982501-1e58f813ce8e?q=80&w=1000&auto=format&fit=crop" alt="Slide 2">
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1682687221038-40438aaefa06?q=80&w=1000&auto=format&fit=crop" alt="Slide 3">
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1682695794816-7b9da18ed470?q=80&w=1000&auto=format&fit=crop" alt="Slide 4">
+                </div>
+            </div>
+
+            <button class="carousel-btn next-btn">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+
+            <div class="carousel-dots">
+                <div class="dot active" data-index="0"></div>
+                <div class="dot" data-index="1"></div>
+                <div class="dot" data-index="2"></div>
+                <div class="dot" data-index="3"></div>
+            </div>
+        </div>
+
+        <section class="bio-section">
+            <h2>🌍 The Journey So Far</h2>
+            <p>My career has been anything but a straight line. Originally from Belgium, I started my academic journey deep in the exact sciences, studying Civil and Industrial Engineering at KU Leuven. While I loved the analytical problem-solving required in engineering, I quickly realized my true passion lay in dynamic, global environments.</p>
+            <p>That realization led me to swap the traditional office for the world map. Over the past decade, I have lived, worked, and managed complex operations across Mexico, Egypt, Costa Rica, and now Spain. Adapting to diverse cultures, learning new languages on the fly, and solving high-stress logistical puzzles has shaped not just my professional career, but my entire worldview.</p>
+        </section>
+
+        <section class="bio-section">
+            <h2>🏠 Life at Home & Wellness</h2>
+            <p>While my background is rooted in fast-paced tourism and operations, life at home in Cabo de Palos is much more grounded. I share my daily routine with my cat, Nori. Over the past year, I have taken major steps to prioritize my long-term health and well-being, and I am proud to have been completely smoke-free since October 2024.</p>
+        </section>
+
+        <section>
+            <h2>✨ Passions & Interests</h2>
+            <div class="interests-grid">
+                <div class="interest-card">
+                    <span class="interest-icon">🏃‍♂️</span>
+                    <p class="interest-title">Running</p>
+                    <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">Hitting the pavement to clear the mind and maintain physical discipline.</p>
+                </div>
+                <div class="interest-card">
+                    <span class="interest-icon">📚</span>
+                    <p class="interest-title">Reading & History</p>
+                    <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">Constantly exploring historical narratives and learning how the past shapes our modern world.</p>
+                </div>
+                <div class="interest-card">
+                    <span class="interest-icon">🔭</span>
+                    <p class="interest-title">Astronomy</p>
+                    <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">Fascinated by the cosmos, planetary history, and the vast mechanics of the universe.</p>
+                </div>
+                <div class="interest-card">
+                    <span class="interest-icon">📸</span>
+                    <p class="interest-title">Photography</p>
+                    <p style="font-size: 0.9em; color: var(--text-light); margin-top: 5px;">Capturing moments above and below the surface, mastering light and composition since 2006.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script>
+    // Carousel Functionality
+    document.addEventListener("DOMContentLoaded", function() {
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const nextButton = document.querySelector('.next-btn');
+        const prevButton = document.querySelector('.prev-btn');
+        const dots = Array.from(document.querySelectorAll('.dot'));
+        
+        let currentIndex = 0;
+
+        function updateCarousel(index) {
+            track.style.transform = 'translateX(-' + (index * 100) + '%)';
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel(currentIndex);
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateCarousel(currentIndex);
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel(currentIndex);
+            });
+        });
+
+        // Optional Auto-play
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel(currentIndex);
+        }, 5000); // Changes slide every 5 seconds
+    });
+</script>
+
+</body>
+</html>
