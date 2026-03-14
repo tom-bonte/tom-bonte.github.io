@@ -296,6 +296,7 @@
             .job-header-top { flex-direction: column; align-items: flex-start; }
             .timeline-dot { left: 11px; top: 40px; }
             .skills-grid { grid-template-columns: 1fr; }
+            .intro-box { padding: 25px 15px; max-width: 90%; }
         }
 
         /* ----------------------------------
@@ -303,11 +304,16 @@
            ---------------------------------- */
         @media print {
             @page { margin: 1.5cm; }
-            body { 
+            
+            /* CRITICAL FIX: Resetting overflow and height allows the browser to print multiple pages */
+            html, body { 
                 background: #fff !important; 
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important; 
                 font-size: 11pt !important; 
                 color: #000 !important; 
+                overflow: visible !important; 
+                height: auto !important; 
+                min-height: auto !important;
             }
             
             /* Destroy Parallax, Backgrounds, Maps & Web-Only Elements */
@@ -321,6 +327,7 @@
                 padding: 0 !important; 
                 margin-bottom: 20px !important; 
                 min-height: auto !important; 
+                position: static !important;
             }
             
             .glass-panel { 
@@ -332,6 +339,7 @@
                 padding: 0 !important; 
                 max-width: 100% !important; 
                 border-radius: 0 !important; 
+                position: static !important;
             }
             
             /* Header Restructure for Print */
@@ -380,7 +388,7 @@
 
             /* Experience / Timeline */
             .timeline { margin-top: 0 !important; }
-            .timeline-item { padding-left: 0 !important; margin-bottom: 20px !important; }
+            .timeline-item { padding-left: 0 !important; margin-bottom: 20px !important; page-break-inside: avoid !important; }
             .timeline-date { display: none !important; } 
             
             .job-card, .skill-card { border: none !important; padding: 0 !important; box-shadow: none !important; margin-bottom: 20px !important; background: transparent !important; transform: none !important; page-break-inside: avoid !important; }
@@ -388,15 +396,15 @@
             
             .job-header-top { display: flex !important; justify-content: space-between !important; align-items: baseline !important; margin-bottom: 4px !important; transform: none !important; }
             .job-title { font-size: 12.5pt !important; color: #000 !important; margin: 0 !important; text-shadow: none !important; font-weight: bold !important;}
-            .job-duration { background: transparent !important; color: #000 !important; padding: 0 !important; font-size: 11pt !important; font-weight: bold !important; border: none !important; }
+            .job-duration { background: transparent !important; color: #333 !important; padding: 0 !important; font-size: 11pt !important; font-weight: bold !important; border: none !important; }
             
             .job-company { display: block !important; font-weight: 600 !important; font-style: italic !important; color: #444 !important; font-size: 11pt !important; margin-bottom: 8px !important; transform: none !important;}
             
-            .job-card p, .job-card ul, .skill-card p { margin: 0 0 8px 0 !important; line-height: 1.5 !important; color: #000 !important; font-size: 11pt !important; transform: none !important; text-shadow: none !important;}
-            .job-card ul { padding-left: 20px !important; }
+            .job-card p, .job-card ul, .skill-card p { margin: 0 0 8px 0 !important; line-height: 1.5 !important; color: #111 !important; font-size: 11pt !important; transform: none !important; text-shadow: none !important;}
+            .job-card ul { padding-left: 18px !important; }
 
             .skills-grid { display: block !important; }
-            .skill-card { margin-bottom: 15px !important; }
+            .skill-card { margin-bottom: 15px !important; page-break-inside: avoid !important; }
             .skill-card h3 { font-size: 12pt !important; color: #000 !important; margin-bottom: 5px !important; font-weight: bold !important; transform: none !important; text-shadow: none !important;}
 
             h2 { page-break-after: avoid !important; }
