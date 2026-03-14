@@ -7,21 +7,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0f172a; 
-            --secondary: #2563eb; 
-            --accent: #e0e7ff; 
+            --primary-color: #0f172a; 
+            --secondary-color: #2563eb; 
+            --accent-color: #e0e7ff; 
             --text-main: #334155;
             --text-light: #64748b;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --border: #e2e8f0;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            line-height: 1.7;
+            line-height: 1.6;
             color: var(--text-main);
-            background-color: var(--bg);
+            background-color: var(--bg-color);
             margin: 0;
             padding: 0;
             -webkit-font-smoothing: antialiased;
@@ -30,62 +30,84 @@
         .container {
             max-width: 1000px;
             margin: 50px auto;
-            background: var(--card);
+            background: var(--card-bg);
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
             overflow: hidden;
         }
 
-        /* Clean Header */
+        /* Header matching index.html */
         header {
-            background: var(--card);
-            color: var(--primary);
-            padding: 40px 60px 30px 60px;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e293b 100%);
+            color: white;
+            padding: 50px 60px;
             position: relative;
+            text-align: center;
         }
 
-        .btn-bailout {
-            position: absolute;
-            top: 30px;
-            left: 40px;
+        .btn-download {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #f1f5f9;
-            color: var(--text-main);
-            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 20px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9em;
-            transition: all 0.2s ease;
-            border: 1px solid #cbd5e1;
+            transition: background 0.3s ease, transform 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.95em;
+            margin-bottom: 20px;
         }
 
-        .btn-bailout:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+        .btn-download:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         header h1 {
-            margin: 20px 0 10px 0;
-            font-size: 3em;
-            font-weight: 800;
-            letter-spacing: -1px;
+            margin: 0 0 12px 0;
+            font-size: 3.2em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
         }
 
         header p {
-            color: var(--text-light);
-            font-size: 1.15em;
+            color: #cbd5e1;
+            font-size: 1.1em;
+            font-weight: 300;
             margin: 0 auto;
             max-width: 600px;
         }
 
         .content {
             padding: 50px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::after {
+            content: "";
+            flex: 1;
+            height: 2px;
+            background: var(--accent-color);
+            margin-left: 15px;
+            border-radius: 2px;
+        }
+
+        h2:first-child {
+            margin-top: 0;
         }
 
         /* 3D Cover Flow Carousel */
@@ -180,42 +202,23 @@
         .next-btn { right: 20px; }
 
         /* Digital Trip Map Styles */
-        .trip-section {
-            margin-bottom: 50px;
-        }
-
-        .trip-header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-        }
-
-        .trip-header h2 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 1.8em;
-            font-weight: 800;
-            border-bottom: 2px solid var(--accent);
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-
         .trip-container-box {
             display: flex;
             flex-direction: column;
-            background: var(--card);
+            background: var(--card-bg);
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
             overflow: hidden;
-            border: 1px solid var(--border);
+            border: 1px solid var(--border-color);
         }
 
         .map-widget {
             position: relative;
             width: 100%;
-            height: 400px;
-            background: #dbeafe; 
+            height: 380px;
+            background: #dbeafe; /* Subtle water blue */
             overflow: hidden;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .map-viewport {
@@ -224,19 +227,20 @@
             position: relative;
             transform-origin: center center;
             transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
-            /* Massive 2500px PNG fallback to prevent CSS SVG scale crashing */
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Simple_world_map.svg/2560px-Simple_world_map.svg.png');
+            /* Using a highly reliable, detailed global PNG to prevent CSS scaling crashes */
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/World_map_blank_gmt.png/2560px-World_map_blank_gmt.png');
             background-size: 100% 100%;
             background-position: center;
             background-repeat: no-repeat;
+            opacity: 0.8;
         }
 
         .map-dot {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: var(--secondary);
-            border: 1px solid white;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary-color);
+            border: 2px solid white;
             border-radius: 50%;
             transform: translate(-50%, -50%);
             opacity: 0;
@@ -249,12 +253,13 @@
         .map-dot.question-mark {
             background: transparent;
             border: none;
-            font-size: 10px;
-            font-weight: 900;
-            color: var(--primary);
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: center;
+            transform: translate(-50%, -50%) scale(1.5);
         }
 
         .map-dot.pulse {
@@ -264,7 +269,7 @@
 
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6); }
-            70% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0); }
+            70% { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
             100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
         }
 
@@ -278,20 +283,19 @@
             pointer-events: none;
         }
 
-        #vehicle {
-            position: absolute;
-            font-size: 8px; /* Scales up with viewport zoom */
-            z-index: 6;
-            opacity: 0;
-            transform: translate(-50%, -50%);
-            transition: top 1.2s ease-in-out, left 1.2s ease-in-out;
-            pointer-events: none;
-            filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.3));
+        .animated-line {
+            stroke-dasharray: 500;
+            stroke-dashoffset: 500;
+            animation: drawLine 1.2s forwards ease-in-out;
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
         }
 
         /* Clean UI Text Box */
         .map-ui {
-            padding: 30px 40px;
+            padding: 30px;
             background: #fff;
         }
 
@@ -304,23 +308,23 @@
 
         .map-step-title {
             margin: 0;
-            color: var(--primary);
-            font-size: 1.5em;
-            font-weight: 800;
+            color: var(--primary-color);
+            font-size: 1.35em;
+            font-weight: 700;
         }
 
         .map-step-meta {
-            color: var(--secondary);
+            color: var(--secondary-color);
             font-weight: 600;
-            font-size: 0.95em;
+            font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .map-step-desc {
             margin: 0 0 25px 0;
-            color: var(--text-main);
-            font-size: 1.05em;
+            color: var(--text-light);
+            font-size: 1em;
             line-height: 1.6;
             min-height: 50px;
         }
@@ -330,93 +334,91 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid var(--border-color);
             padding-top: 20px;
         }
 
         .map-progress {
             font-size: 0.9em;
-            font-weight: 700;
+            font-weight: 600;
             color: var(--text-light);
             flex: 1;
             text-align: center;
         }
 
         .btn-nav {
-            padding: 10px 24px;
+            padding: 10px 20px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             font-size: 0.95em;
             border: none;
-            width: 130px; /* Fixed width prevents layout jumping */
+            width: 120px;
             text-align: center;
         }
 
         .btn-prev {
-            background: #f1f5f9;
-            color: var(--text-main);
+            background: var(--accent-color);
+            color: var(--secondary-color);
         }
 
-        .btn-prev:hover { background: #e2e8f0; }
+        .btn-prev:hover { background: #c7d2fe; }
 
         .btn-next {
-            background: var(--primary);
+            background: var(--primary-color);
             color: white;
         }
 
-        .btn-next:hover { background: var(--secondary); }
+        .btn-next:hover { background: #1e293b; }
 
-        /* The Vault (Emojis Restored!) */
-        .vault-grid {
+        /* The Vault matching Resume Skills Grid */
+        .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
         }
 
-        .vault-card {
-            background: var(--bg);
+        .skill-card {
+            background: #fff;
             padding: 25px;
             border-radius: 12px;
-            border: 1px solid var(--border);
-            transition: transform 0.2s ease;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
         }
 
-        .vault-card:hover {
-            transform: translateY(-3px);
-            border-color: #cbd5e1;
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
         }
 
-        .vault-card h3 {
-            margin: 0 0 8px 0;
-            color: var(--primary);
+        .skill-card h3 {
+            margin: 0 0 10px 0;
             font-size: 1.1em;
-            font-weight: 700;
+            color: var(--primary-color);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .vault-card p {
-            margin: 0;
+        .skill-card p {
             color: var(--text-light);
-            font-size: 0.95em;
+            text-align: justify;
+            margin-bottom: 0;
         }
 
         @media (max-width: 768px) {
-            .container { margin: 10px; }
-            header { padding: 80px 20px 30px 20px; }
-            .btn-bailout { top: 20px; left: 20px; }
+            .container { margin: 10px; border-radius: 12px;}
+            header { padding: 40px 20px; }
             header h1 { font-size: 2.2em; }
-            .content { padding: 25px; }
+            .content { padding: 25px 20px; }
             .carousel-container { height: 300px; }
             .carousel-slide { width: 75%; }
             .map-widget { height: 300px; }
             .map-ui { padding: 20px; }
             .map-ui-header { flex-direction: column; align-items: flex-start; gap: 5px; }
             .btn-nav { padding: 10px 15px; font-size: 0.85em; width: 100px;}
+            .skills-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -424,8 +426,9 @@
 
 <div class="container">
     <header>
-        <a href="index.html" class="btn-bailout">
-            ← Back to Resume
+        <a href="index.html" class="btn-download">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to Resume
         </a>
         <h1>Beyond the Resume</h1>
         <p>A global journey of operations, leadership, and continuous learning.</p>
@@ -459,15 +462,13 @@
         </div>
 
         <section class="trip-section">
-            <div class="trip-header">
-                <h2>The Operational Journey</h2>
-            </div>
+            <h2>✈️ The Operational Journey</h2>
             
             <div class="trip-container-box">
                 <div class="map-widget">
                     <div class="map-viewport" id="mapViewport">
                         <svg id="mapLines"></svg>
-                        <div id="vehicle"></div> </div>
+                        </div>
                 </div>
                 
                 <div class="map-ui">
@@ -487,23 +488,21 @@
         </section>
 
         <section>
-            <div class="trip-header">
-                <h2>The Vault</h2>
-            </div>
-            <div class="vault-grid">
-                <div class="vault-card">
+            <h2>🔐 The Vault: Behind the Scenes</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
                     <h3>👩‍❤️‍👨 My Co-Pilots</h3>
-                    <p>I am currently based in Spain, sharing life and daily routines with my Venezuelan wife, Desi, and our cat, Nori.</p>
+                    <p>I am currently based in Spain, sharing life and daily routines with my amazing Venezuelan wife, Desi, and our cat, Nori.</p>
                 </div>
-                <div class="vault-card">
+                <div class="skill-card">
                     <h3>🫁 Discipline & Wellness</h3>
                     <p>I take long-term health seriously. I maintain strict physical discipline through running and am proud to have been smoke-free since October 2024.</p>
                 </div>
-                <div class="vault-card">
+                <div class="skill-card">
                     <h3>🔭 Deep Sky Astronomy</h3>
                     <p>Fascinated by the mechanics of the universe, planetary history, and the cosmos. A lifelong passion for understanding the macroscopic world.</p>
                 </div>
-                <div class="vault-card">
+                <div class="skill-card">
                     <h3>📚 Perpetual Student</h3>
                     <p>A voracious reader of history. I constantly explore historical narratives to understand exactly how past events shape our modern operational world.</p>
                 </div>
@@ -539,34 +538,35 @@
         updateCarousel(currentSlide);
 
         // ------------------------------------
-        // 2. MATHEMATICAL MAP ENGINE (Fixed SVG Rendering)
+        // 2. MATHEMATICAL MAP ENGINE
         // ------------------------------------
+        // Mathematically calculated Equirectangular coordinates based on GMT Map projection
         const stops = [
-            { title: "Waregem, Belgium", date: "Feb 1989", x: 49.3, y: 31.8, zoom: 12, 
+            { title: "Waregem, Belgium", date: "Feb 1989", x: 50.94, y: 21.77, zoom: 7, 
               desc: "Born near the coast. A lifelong fascination with the ocean's brute force and an early drive for discipline begins here." },
             
-            { title: "Primary Education", date: "1995 – 2001", x: 49.3, y: 31.8, zoom: 12, 
+            { title: "Primary Education", date: "1995 – 2001", x: 50.94, y: 21.77, zoom: 7, 
               desc: "Consistently finished top of the class ('primus') every single year, establishing a baseline of high performance." },
             
-            { title: "HHC Waregem", date: "2001 – 2007", x: 49.3, y: 31.8, zoom: 12, 
+            { title: "HHC Waregem", date: "2001 – 2007", x: 50.94, y: 21.77, zoom: 7, 
               desc: "Graduated as Laureate in Sciences-Mathematics. Ranked at the very top of 200+ students. The analytical foundation is permanently set." },
             
-            { title: "KU Leuven", date: "2007 – 2013 (5 Years, 9 Mos)", x: 49.6, y: 31.8, zoom: 12, 
+            { title: "KU Leuven", date: "2007 – 2013 (5 Years, 9 Mos)", x: 51.30, y: 21.77, zoom: 7, 
               desc: "Studied Civil and Industrial Engineering. Mastered complex systems and logic, but realized my true passion required a dynamic, global environment." },
             
-            { title: "Playa del Carmen, Mexico", date: "Oct 2013 – Jun 2014 (9 Mos)", x: 23.5, y: 44.5, zoom: 3.5, 
+            { title: "Playa del Carmen, Mexico", date: "Oct 2013 – Jun 2014 (9 Mos)", x: 25.83, y: 38.55, zoom: 3.5, 
               desc: "Professional Internship. Discovered a natural talent for B2C sales and applied 6 languages to rapidly become the top-selling intern on the resort." },
             
-            { title: "Hurghada, Egypt", date: "Mar 2015 – Dec 2016 (1 Yr, 9 Mos)", x: 56.5, y: 41.5, zoom: 3.5, 
+            { title: "Hurghada, Egypt", date: "Mar 2015 – Dec 2016 (1 Yr, 9 Mos)", x: 59.38, y: 34.88, zoom: 3.5, 
               desc: "Promoted to IDC Staff Instructor. Managed daily marine logistics for 30+ guests, executing high-stress scheduling across 60+ locations." },
             
-            { title: "Playas del Coco, Costa Rica", date: "Aug 2018 – Oct 2024 (6 Yrs, 2 Mos)", x: 23.8, y: 52.0, zoom: 3.5, 
+            { title: "Playas del Coco, Costa Rica", date: "Aug 2018 – Oct 2024 (6 Yrs, 2 Mos)", x: 26.22, y: 44.16, zoom: 3.5, 
               desc: "General Manager at a 5* CDC. Directed B2B operations, staff development, and complex dispatch logistics. Earned Master Instructor rating." },
             
-            { title: "Cabo de Palos, Spain", date: "Oct 2024 – Present (1 Yr, 5 Mos)", x: 48.2, y: 38.5, zoom: 6, 
+            { title: "Cabo de Palos, Spain", date: "Oct 2024 – Present (1 Yr, 5 Mos)", x: 49.80, y: 29.11, zoom: 6, 
               desc: "Operations Manager at Mangamar. Currently directing high-volume marine logistics, complex scheduling, and international client relations." },
             
-            { title: "The Next Pivot", date: "2026 & Beyond", x: 46.0, y: 33.0, zoom: 3, isQuestion: true,
+            { title: "The Next Pivot", date: "2026 & Beyond", x: 45.00, y: 30.00, zoom: 2.5, isQuestion: true,
               desc: "After 13 years scaling operations globally, I am ready for the next challenge. Bringing an engineering brain, crisis management, and linguistic fluency to the corporate sector." }
         ];
 
@@ -575,7 +575,6 @@
         
         const viewport = document.getElementById('mapViewport');
         const svgLines = document.getElementById('mapLines');
-        const vehicleEl = document.getElementById('vehicle');
         const titleEl = document.getElementById('tripTitle');
         const dateEl = document.getElementById('tripDate');
         const descEl = document.getElementById('tripDesc');
@@ -595,16 +594,17 @@
         });
 
         function drawAnimatedLine(p1, p2) {
-            svgLines.innerHTML = ''; // ONLY keep the current line
+            svgLines.innerHTML = ''; // ONLY keep the current line to prevent clutter
             const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
             line.setAttribute("x1", `${p1.x}%`);
             line.setAttribute("y1", `${p1.y}%`);
             line.setAttribute("x2", `${p2.x}%`);
             line.setAttribute("y2", `${p2.y}%`);
             line.setAttribute("stroke", "#2563eb");
-            line.setAttribute("stroke-width", "1");
-            line.setAttribute("stroke-dasharray", "2, 2");
+            line.setAttribute("stroke-width", "2"); // Standard thickness, visually adjusts with SVG scaling
+            line.setAttribute("stroke-dasharray", "4, 4");
             line.setAttribute("vector-effect", "non-scaling-stroke");
+            line.classList.add("animated-line");
             svgLines.appendChild(line);
         }
 
@@ -615,9 +615,9 @@
             descEl.textContent = stop.desc;
             progressEl.textContent = `${index + 1} / ${stops.length}`;
             
-            // STRICT Button Visibility Logic
-            btnPrev.style.display = index === 0 ? 'none' : 'block';
-            btnNext.style.display = index === stops.length - 1 ? 'none' : 'block';
+            // STRICT Navigation Visibility
+            btnPrev.style.visibility = index === 0 ? 'hidden' : 'visible';
+            btnNext.style.visibility = index === stops.length - 1 ? 'hidden' : 'visible';
         }
 
         function executeTrip(index) {
@@ -625,7 +625,6 @@
             
             const toStop = stops[index];
             const fromStop = stops[currentStop];
-            const isForward = index > currentStop;
             
             updateStepData(index);
 
@@ -634,44 +633,28 @@
                 btnNext.disabled = true;
                 btnPrev.disabled = true;
 
-                // Determine Vehicle: Train for Belgium (steps 0-3), Plane for the rest
-                const vehicle = (index <= 3 && currentStop <= 3) ? '🚂' : '✈️';
-
-                // 1. Calculate Midpoint to zoom out
+                // 1. Calculate Midpoint to zoom out and show path
                 const midX = (fromStop.x + toStop.x) / 2;
                 const midY = (fromStop.y + toStop.y) / 2;
-                let midZoom = (index <= 3 && currentStop <= 3) ? 8 : 1.8; 
+                
+                // Keep zoom tight if we are just moving within Belgium
+                let midZoom = (index <= 3 && currentStop <= 3) ? 7 : 1.5; 
 
                 viewport.style.transform = `scale(${midZoom}) translate(${50 - midX}%, ${50 - midY}%)`;
 
-                // 2. Move Vehicle & Draw Line
+                // 2. Draw the dynamic path
                 setTimeout(() => {
-                    vehicleEl.textContent = vehicle;
-                    vehicleEl.style.transition = 'none';
-                    vehicleEl.style.left = `${fromStop.x}%`;
-                    vehicleEl.style.top = `${fromStop.y}%`;
-                    vehicleEl.style.opacity = 1;
-                    
-                    void vehicleEl.offsetWidth; // Reflow
-
-                    vehicleEl.style.transition = 'top 1s ease-in-out, left 1s ease-in-out';
-                    vehicleEl.style.left = `${toStop.x}%`;
-                    vehicleEl.style.top = `${toStop.y}%`;
-                    
-                    if (isForward) drawAnimatedLine(fromStop, toStop);
-                    else svgLines.innerHTML = ''; // Clear line if going backwards
-
-                }, 800);
+                    drawAnimatedLine(fromStop, toStop);
+                }, 400);
 
                 // 3. Zoom into Destination
                 setTimeout(() => {
                     viewport.style.transform = `scale(${toStop.zoom}) translate(${50 - toStop.x}%, ${50 - toStop.y}%)`;
-                    vehicleEl.style.opacity = 0;
                     
                     document.querySelectorAll('.map-dot').forEach((dot, i) => {
                         dot.classList.remove('pulse');
                         if (i <= index) dot.classList.add('visible');
-                        else dot.classList.remove('visible');
+                        else dot.classList.remove('visible'); // Hide dots ahead of us
                     });
                     document.getElementById(`dot-${index}`).classList.add('pulse');
 
@@ -680,7 +663,7 @@
                     btnNext.disabled = false;
                     btnPrev.disabled = false;
 
-                }, 1800);
+                }, 1300); // Snappy transition timing
 
             } else {
                 // Initial Load
@@ -692,7 +675,7 @@
         btnNext.onclick = () => executeTrip(currentStop + 1);
         btnPrev.onclick = () => executeTrip(currentStop - 1);
 
-        setTimeout(() => { executeTrip(0); }, 200);
+        setTimeout(() => { executeTrip(0); }, 300);
     });
 </script>
 
