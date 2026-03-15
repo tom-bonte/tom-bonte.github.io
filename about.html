@@ -40,7 +40,7 @@
             top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: url('https://raw.githubusercontent.com/tom-bonte/tom-bonte.github.io/0f9c60cc53bac429920999d85877d929f69a9b92/iSpazio-2.jpg');
             background-size: cover;
-            background-position: center 0%; /* JS will manipulate this from 0% to 100% */
+            background-position: center 0%;
             z-index: -2;
             will-change: background-position;
         }
@@ -63,7 +63,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 70px 20px;
+            padding: 50px 20px;
             box-sizing: border-box;
         }
 
@@ -135,7 +135,6 @@
             height: 500px;
             border-radius: 16px;
             margin-top: 40px;
-            margin-bottom: 20px;
             background: rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
@@ -228,97 +227,145 @@
         .prev-btn { left: 20px; }
         .next-btn { right: 20px; }
 
-        /* The Sticky Scroll Vault Layout */
-        .vault-section {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 50px;
-            padding: 40px 0 20px 0;
-            margin-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+        /* ----------------------------------
+           WORD CLOUD SECTION
+           ---------------------------------- */
+        .word-cloud-header {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        .vault-sticky-left {
-            position: sticky;
-            top: 100px;
-            width: 35%;
-            flex-shrink: 0;
-        }
-
-        .vault-sticky-left h2 {
+        .word-cloud-header h2 {
             font-size: 2.8em;
             font-weight: 900;
-            margin: 0 0 15px 0;
+            margin: 0 0 10px 0;
             color: white;
             text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            line-height: 1.1;
             letter-spacing: -1px;
         }
 
-        .vault-sticky-left p {
+        .word-cloud-header p {
+            color: rgba(255,255,255,0.7);
             font-size: 1.1em;
-            color: rgba(255,255,255,0.75);
-            line-height: 1.6;
+            margin: 0;
         }
 
-        .vault-scroll-right {
-            width: 60%;
+        .cloud-container {
             display: flex;
-            flex-direction: column;
-            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            /* Tightly packed gap to look like a real generated word cloud */
+            gap: 8px 18px; 
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.4s ease;
         }
 
-        /* Liquid Glass Cards */
-        .vault-card {
-            background: var(--glass-card);
-            padding: 40px;
+        .cloud-word {
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+            color: var(--word-color);
+            text-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            will-change: transform, text-shadow, opacity;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            /* Crushing line height to pack words tightly vertically */
+            line-height: 0.85; 
+            margin: 0;
+        }
+
+        /* The sibling dimming effect - kept light so words are still visible */
+        .cloud-container:hover .cloud-word:not(:hover) {
+            opacity: 0.5; /* Easy to see the other words */
+        }
+
+        .cloud-word:hover {
+            opacity: 1 !important;
+            transform: scale(1.1) translateY(-3px) rotate(-1deg);
+            text-shadow: 0 0 20px var(--word-color);
+            z-index: 2;
+        }
+
+        /* ----------------------------------
+           MODAL WINDOW (HOVER POPUP)
+           ---------------------------------- */
+        .word-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            /* NO background tint and NO blur here so the background stays crystal clear */
+            background: transparent; 
+            z-index: 9999; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.2s ease;
+            
+            /* CRITICAL: Allows mouse to stay interacting with the words underneath through the invisible screen */
+            pointer-events: none; 
+        }
+
+        .word-modal.open {
+            opacity: 1; 
+            visibility: visible;
+        }
+
+        .word-modal-content {
+            position: relative;
+            background: rgba(18, 24, 43, 0.98); /* Deep, almost solid dark blue/black */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.05);
             border-radius: 20px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            padding: 40px 50px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Optional slight blur just for the box itself */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
-        .vault-card:hover {
-            transform: translateY(-5px);
-            background: var(--glass-card-hover);
-            border-color: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-        }
-        
-        .vault-card .emoji-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            display: block;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+        .word-modal.open .word-modal-content {
+            transform: scale(1) translateY(0);
         }
 
-        .vault-card h3 {
+        #modal-keyword {
+            font-size: 0.9em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        #modal-title {
             margin: 0 0 15px 0;
             color: white;
-            font-size: 1.6em;
+            font-size: 2.4em;
             font-weight: 800;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.1;
         }
 
-        .vault-card p {
+        #modal-text {
             margin: 0;
             color: rgba(255,255,255,0.85);
-            font-size: 1.1em;
-            line-height: 1.7;
+            font-size: 1.15em;
+            line-height: 1.6;
         }
 
         /* Scroll Reveal Animations */
         .reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
         .reveal-up.active { opacity: 1; transform: translate(0, 0); }
-
-        @media (max-width: 900px) {
-            .vault-section { flex-direction: column; gap: 30px; }
-            .vault-sticky-left { position: relative; top: 0; width: 100%; text-align: left; margin-bottom: 10px; }
-            .vault-scroll-right { width: 100%; }
-        }
 
         @media (max-width: 768px) {
             .content-section { padding: 40px 15px; }
@@ -326,7 +373,11 @@
             header h1 { font-size: 2.5em; }
             .carousel-container { height: 350px; }
             .carousel-slide { width: 75%; }
-            .vault-card { padding: 25px; }
+            .word-cloud-header h2 { font-size: 2.2em; }
+            .cloud-container { gap: 10px 15px; padding: 10px; }
+            .word-modal-content { padding: 30px 25px; }
+            #modal-title { font-size: 1.8em; }
+            #modal-text { font-size: 1.05em; }
         }
     </style>
 </head>
@@ -335,6 +386,17 @@
 <div id="global-bg"></div>
 <div id="global-bg-overlay"></div>
 
+<!-- Modal Popup for Word Cloud (Hover Activated) -->
+<div id="word-modal" class="word-modal">
+    <div class="word-modal-content">
+        <!-- The exact word hovered will appear here -->
+        <div id="modal-keyword">KEYWORD</div>
+        <h3 id="modal-title">Title</h3>
+        <p id="modal-text">Description goes here.</p>
+    </div>
+</div>
+
+<!-- SECTION 1: Carousel -->
 <section class="content-section">
     <div class="glass-panel">
         <header>
@@ -372,36 +434,35 @@
                 <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
         </div>
+    </div>
+</section>
 
-        <div class="vault-section">
-            <div class="vault-sticky-left reveal-up">
-                <h2>The Vault</h2>
-                <p>A deeper dive into the mechanics of my mindset outside of the professional sphere.</p>
-            </div>
-            <div class="vault-scroll-right">
-                <div class="vault-card reveal-up">
-                    <span class="emoji-icon">👩‍❤️‍👨</span>
-                    <h3>My Co-Pilots</h3>
-                    <p>I am currently based in Spain, sharing life, daily routines, and new adventures with my amazing Venezuelan wife, Desi, and our cat, Nori.</p>
-                </div>
-                <div class="vault-card reveal-up">
-                    <span class="emoji-icon">🫁</span>
-                    <h3>Discipline & Wellness</h3>
-                    <p>I take long-term health seriously. I maintain strict physical discipline through running and am proud to have been completely smoke-free since October 2024.</p>
-                </div>
-                <div class="vault-card reveal-up">
-                    <span class="emoji-icon">🔭</span>
-                    <h3>Deep Sky Astronomy</h3>
-                    <p>Fascinated by the mechanics of the universe, planetary history, and the cosmos. I have a lifelong passion for understanding the macroscopic world and mapping the night sky.</p>
-                </div>
-                <div class="vault-card reveal-up">
-                    <span class="emoji-icon">📚</span>
-                    <h3>Perpetual Student</h3>
-                    <p>A voracious reader of history. I constantly explore historical narratives and geopolitical shifts to understand exactly how past events shape our modern operational world.</p>
-                </div>
-            </div>
+<!-- SECTION 2: Word Cloud in its own Liquid Glass Panel -->
+<section class="content-section">
+    <div class="glass-panel reveal-up">
+        <div class="word-cloud-header">
+            <h2>Get to know my interests and hobbies</h2>
+            <p>Hover over a word below to dive deeper into my world.</p>
         </div>
-
+        
+        <!-- Bright colors applied via CSS variables inline, extreme mixed sizing for true cloud look -->
+        <div class="cloud-container">
+            <span class="cloud-word" data-id="diving" style="--word-color: #00f2fe; font-size: 3.5em; font-weight: 900;">Scuba Diving</span>
+            <span class="cloud-word" data-id="running" style="--word-color: #43e97b; font-size: 1.8em; font-weight: 500;">Avid Runner</span>
+            <span class="cloud-word" data-id="romanhistory" style="--word-color: #f6d365; font-size: 2.8em; font-weight: 800;">Roman History</span>
+            <span class="cloud-word" data-id="venezuela" style="--word-color: #ff0844; font-size: 2.0em; font-weight: 500;">Venezuela</span>
+            <span class="cloud-word" data-id="astronomy" style="--word-color: #f43b47; font-size: 3.2em; font-weight: 800;">Astronomy</span>
+            <span class="cloud-word" data-id="reading" style="--word-color: #ff9a44; font-size: 1.4em; font-weight: 300;">Reading</span>
+            <span class="cloud-word" data-id="nonsmoker" style="--word-color: #00ff87; font-size: 1.9em; font-weight: 600;">Non-Smoker</span>
+            <span class="cloud-word" data-id="languages" style="--word-color: #a18cd1; font-size: 2.5em; font-weight: 700;">Languages</span>
+            <span class="cloud-word" data-id="efficiency" style="--word-color: #fbc2eb; font-size: 2.2em; font-weight: 700;">Efficiency</span>
+            <span class="cloud-word" data-id="maps" style="--word-color: #8fd3f4; font-size: 1.6em; font-weight: 400;">Maps</span>
+            <span class="cloud-word" data-id="greekmythology" style="--word-color: #cfd9df; font-size: 2.1em; font-weight: 600;">Greek Mythology</span>
+            <span class="cloud-word" data-id="beer" style="--word-color: #f6d365; font-size: 3.8em; font-weight: 900;">Belgian Beer</span>
+            <span class="cloud-word" data-id="etymology" style="--word-color: #ff9a9e; font-size: 1.5em; font-weight: 500;">Etymology</span>
+            <span class="cloud-word" data-id="cycling" style="--word-color: #c2e9fb; font-size: 2.9em; font-weight: 800;">Cycling</span>
+            <span class="cloud-word" data-id="harrypotter" style="--word-color: #d4fc79; font-size: 2.3em; font-weight: 600;">Harry Potter</span>
+        </div>
     </div>
 </section>
 
@@ -414,7 +475,6 @@
         const globalBg = document.getElementById('global-bg');
         
         window.addEventListener('scroll', () => {
-            // Mirrors index.html behavior precisely
             if (globalBg) {
                 const scrollable = document.documentElement.scrollHeight - window.innerHeight;
                 const scrollPercent = scrollable > 0 ? (window.scrollY / scrollable) : 0;
@@ -448,8 +508,104 @@
             }); 
         });
         
-        // Initialize Carousel
         updateCarousel(currentSlide);
+
+        // ------------------------------------
+        // HOVER POPUP & WORD CLOUD LOGIC
+        // ------------------------------------
+        const cloudData = {
+            "nonsmoker": {
+                title: "Breathing Easy",
+                text: "I take my long-term health seriously. I'm proud to say I have been completely smoke-free since October 2024, focusing on cleaner living and better endurance."
+            },
+            "running": {
+                title: "Pounding the Pavement",
+                text: "Running is my ultimate reset button. It is how I empty my head after a chaotic day of operations, maintain my physical discipline, and explore new areas on foot."
+            },
+            "astronomy": {
+                title: "Deep Sky Explorer",
+                text: "The cosmos has been a lifelong fascination. From observing distant planets and galaxies through my telescope to diving deep into the mechanics of the universe through intense study."
+            },
+            "reading": {
+                title: "Voracious Reader",
+                text: "I am a constant consumer of both fiction and non-fiction literature. I make it a point to read at least a few dozen books every single year to keep my perspective broad and my mind sharp."
+            },
+            "romanhistory": {
+                title: "Empires & Logistics",
+                text: "I love learning about ancient civilizations and understanding how their societal structures shaped our modern world. The logistics, rise, and fall of the Roman Empire is a personal favorite."
+            },
+            "diving": {
+                title: "5000+ Hours Underwater",
+                text: "I've spent over 7 months of my total life submerged underwater. After guiding, teaching, and exploring for that long, I am honestly surprised I haven't sprouted gills yet."
+            },
+            "venezuela": {
+                title: "My Co-Pilot",
+                text: "I am incredibly lucky to share my life, daily routines, and new adventures with my amazing Venezuelan wife, Desiret. Together, we make a great team."
+            },
+            "languages": {
+                title: "Polyglot Pursuits",
+                text: "Studying languages has been a hobby of mine for most of my adult life. Besides the ones listed on my professional resume, I've also spent time studying Afrikaans, Indonesian, and Italian."
+            },
+            "efficiency": {
+                title: "The Efficiency Game",
+                text: "I will always look for the most efficient way to do something. I get immense satisfaction out of repeating a process with slight tweaks and directly measuring its improved efficiency."
+            },
+            "maps": {
+                title: "Lost in the Atlas",
+                text: "Want to keep me completely occupied for an afternoon? Just put a good atlas in my hands. I love studying maps and spatial geography."
+            },
+            "greekmythology": {
+                title: "Ancient Stories",
+                text: "I love reading the Greek myths and seeing how incredibly relevant their themes remain today. Tracing the etymology that stems from these stories back to modern language still blows my mind."
+            },
+            "beer": {
+                title: "Belgian Pride",
+                text: "As a Belgian, I can't deny my love for a good beer. It's the one thing that keeps me firmly rooted in my Belgian heritage and something I take a lot of pride in."
+            },
+            "etymology": {
+                title: "Word Origins",
+                text: "Etymology makes me genuinely happy. Did you know New York used to be New Amsterdam, populated by people named Jan and Kees? 'Jan-Kees' eventually became 'Yankees'. Boom. Brain blown."
+            },
+            "cycling": {
+                title: "Flandrien Religion",
+                text: "Road bicycle racing is practically a religion in Flanders. For me, the Tour of Flanders is hands down the most important Sunday of the year in my calendar."
+            },
+            "harrypotter": {
+                title: "Wizarding World",
+                text: "Yup... can't deny it. I'm a fan. To this day, I read 2000-page long fan fictions. 'Harry Potter and the Methods of Rationality' and 'All the Young Dudes' are masterpieces that deserve the Nobel Prize for Literature. If you ask me, at least."
+            }
+        };
+
+        const words = document.querySelectorAll('.cloud-word');
+        const wordModal = document.getElementById('word-modal');
+        const modalKeyword = document.getElementById('modal-keyword');
+        const modalTitle = document.getElementById('modal-title');
+        const modalText = document.getElementById('modal-text');
+
+        // Mouse Enter - Show Modal
+        words.forEach(word => {
+            word.addEventListener('mouseenter', function() {
+                const id = this.getAttribute('data-id');
+                const data = cloudData[id];
+
+                if(data) {
+                    // Set Keyword styling and text to match hovered word
+                    modalKeyword.textContent = this.textContent;
+                    modalKeyword.style.color = this.style.getPropertyValue('--word-color');
+                    
+                    // Set Data
+                    modalTitle.innerHTML = data.title;
+                    modalText.innerHTML = data.text;
+                    
+                    wordModal.classList.add('open');
+                }
+            });
+
+            // Mouse Leave - Hide Modal
+            word.addEventListener('mouseleave', function() {
+                wordModal.classList.remove('open');
+            });
+        });
 
         // ------------------------------------
         // SCROLL REVEALS
