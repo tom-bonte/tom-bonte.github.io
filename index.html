@@ -210,7 +210,14 @@
         .map-ui-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
         .map-step-title { margin: 0; color: #fff; font-size: 1.5em; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .map-step-meta { color: #93c5fd; font-weight: 700; font-size: 0.95em; text-transform: uppercase; background: rgba(37, 99, 235, 0.2); border: 1px solid rgba(37, 99, 235, 0.3); padding: 4px 12px; border-radius: 20px; }
-        .map-step-desc { margin: 0 0 25px 0; color: rgba(255,255,255,0.85); font-size: 1.1em; line-height: 1.6; min-height: 50px; font-weight: 500;}
+        .map-step-desc { 
+    margin: 0 0 25px 0; 
+    color: rgba(255,255,255,0.85); 
+    font-size: 1.1em; 
+    line-height: 1.6; 
+    min-height: 150px; /* Increased from 50px to lock the button height */
+    font-weight: 500;
+}
         .map-controls { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
         .map-progress { font-size: 0.95em; font-weight: 800; color: rgba(255,255,255,0.6); flex: 1; text-align: center; }
         .btn-nav { padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-size: 0.95em; border: none; width: 140px; text-align: center; }
